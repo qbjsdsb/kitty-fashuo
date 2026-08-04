@@ -193,6 +193,59 @@ header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5p
 .kb-point.done{background:var(--pink-light);border-color:var(--pink);}
 .kb-point.done .ck{background:var(--pink-deep);border-color:var(--pink-deep);}
 .kb-point:active{transform:scale(.97);}
+.kb-point.due{border-color:#E24B4A;background:#FFF5F5;}
+.kb-point.due .due-dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#E24B4A;margin-top:5px;}
+
+/* today tasks (不背单词式今日任务) */
+.today-tasks{
+  display:flex;align-items:center;gap:10px;background:#FFFDFE;border:2.5px solid var(--line);
+  border-radius:18px;padding:12px 14px;margin-bottom:14px;
+}
+.tt-item{flex:0 0 auto;font-size:13px;color:var(--ink-soft);}
+.tt-item b{font-size:19px;color:var(--red-deep);margin-right:3px;font-variant-numeric:tabular-nums;}
+.tt-sep{flex:0 0 auto;width:1.5px;height:26px;background:var(--line);}
+.tt-go{margin-left:auto;}
+
+/* card mode (不背单词式沉浸卡片) */
+.card-mode{
+  position:fixed;inset:0;z-index:150;background:var(--bg);
+  display:none;flex-direction:column;
+  background-color:var(--bg);
+  background-image:radial-gradient(#FBD9E8 2.2px,transparent 2.2px);
+  background-size:30px 30px;
+}
+.card-mode.show{display:flex;}
+.cm-top{display:flex;align-items:center;gap:12px;padding:16px 18px 0;}
+.cm-exit{
+  border:none;background:#fff;border:2px solid var(--line);border-radius:999px;
+  font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;
+  padding:8px 18px;min-height:40px;display:flex;align-items:center;gap:6px;
+}
+.cm-prog{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums;margin-left:auto;}
+.cm-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 24px 0;min-height:0;}
+.cm-ring{margin-bottom:16px;}
+.cm-subj{font-size:13.5px;font-weight:700;color:var(--pink-deep);letter-spacing:2px;margin-bottom:14px;}
+.cm-card{
+  background:#fff;border:3px solid var(--line);border-radius:26px;
+  padding:38px 28px;text-align:center;font-size:25px;font-weight:700;line-height:1.5;
+  color:var(--ink);width:100%;max-width:560px;min-height:170px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 0 rgba(227,27,35,.08);
+}
+.cm-group{font-size:12px;color:var(--ink-soft);margin-top:14px;}
+.cm-tip{font-size:12px;color:var(--ink-soft);margin-top:10px;}
+.cm-btns{display:flex;gap:12px;padding:16px 18px calc(18px + env(safe-area-inset-bottom));justify-content:center;}
+.cm-btn{
+  flex:1;max-width:180px;border:none;border-radius:18px;font-family:inherit;
+  font-size:15.5px;font-weight:700;color:#fff;cursor:pointer;
+  padding:15px 0;min-height:56px;transition:transform .06s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.cm-btn .sub{font-size:11px;font-weight:400;opacity:.9;}
+.cm-btn:active{transform:scale(.94);}
+.cm-btn.forget{background:#E24B4A;}
+.cm-btn.fuzzy{background:#F2A93B;}
+.cm-btn.remember{background:#3BB273;}
 
 /* logs */
 .log-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
@@ -343,7 +396,7 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
   </summary>
   <div class="u-body">
     <b>每天打开看「今天要处理」</b>：逾期背诵会自动滚进来，点一下按钮就算处理完。<br>
-    <b>背诵</b>：按《考试分析》整理的五科考点清单（约 300 个），背完一个点一个，科→章→考点三层组织。<br>
+    <b>背诵</b>：点「开始背诵」像背单词一样刷考点卡片——记住了/模糊/忘记了三档，连续记住 3 次才掌握，按遗忘曲线自动安排复习。<br>
     <b>刷题</b>：按题型记一笔（法学卷主观题占 73%，简答/论述/案例是大头）。<br>
     <b>错题夹</b>：记下科目/考点/错因，掌握度 3 星，每 3 天会提醒你重做。<br>
     <b>数据安全</b>：都存在你浏览器里，每周导出一份备份，换设备也能带走。
@@ -454,6 +507,16 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
 <!-- ===== 背诵 ===== -->
 <section id="pg-recite" style="display:none">
   <div class="round-banner" id="roundBanner"></div>
+
+  <div class="today-tasks">
+    <div class="tt-item"><b id="ttDue">0</b>个待复习</div>
+    <div class="tt-sep"></div>
+    <div class="tt-item"><b id="ttNew">0</b>个新考点</div>
+    <button class="btn tt-go" onclick="openCardMode()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 H20 M14 6 L20 12 L14 18"/></svg>
+      开始背诵
+    </button>
+  </div>
 
   <div class="card">
     <div class="c-head">
@@ -624,9 +687,31 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
 </div>
 <div id="toast"></div>
 
+<div class="card-mode" id="cardMode">
+  <div class="cm-top">
+    <button class="cm-exit" onclick="closeCardMode()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5 L19 19 M19 5 L5 19"/></svg>
+      退出
+    </button>
+    <div class="cm-prog" id="cmProg">0 / 0</div>
+  </div>
+  <div class="cm-body">
+    <div class="cm-ring" id="cmRing"></div>
+    <div class="cm-subj" id="cmSubj"></div>
+    <div class="cm-card" id="cmCard"></div>
+    <div class="cm-group" id="cmGroup"></div>
+    <div class="cm-tip">心里过一遍这个考点的要点，再选档位</div>
+  </div>
+  <div class="cm-btns">
+    <button class="cm-btn forget" onclick="rateCard('forget')">忘记了<span class="sub">明天再见</span></button>
+    <button class="cm-btn fuzzy" onclick="rateCard('fuzzy')">有点模糊<span class="sub">1 天后再看</span></button>
+    <button class="cm-btn remember" onclick="rateCard('remember')">记住了<span class="sub">3-7 天后复习</span></button>
+  </div>
+</div>
+
 <script>
 /* ============ 工具 ============ */
-var KEY='wb_fashuo_kitty_v3';
+var KEY='wb_fashuo_kitty_v4';
 var SUBJECTS=['刑法','民法','法理学','宪法','法制史'];
 var SUBJ_COLORS={'刑法':'#E31B23','民法':'#F17EB0','法理学':'#F2C200','宪法':'#7AC74F','法制史':'#B388EB'};
 var SUBJ_SHORT={'刑法':'刑法','民法':'民法','法理学':'法理','宪法':'宪法','法制史':'法制史'};
@@ -728,10 +813,10 @@ function defaultState(){
   var yest=addDays(TODAY,-1);
   var ck=[];for(var i=8;i>=0;i--)ck.push(addDays(TODAY,-i));
   var kb={};
-  SUBJECTS.forEach(function(s){kb[s]=(KNOWLEDGE[s]||[]).map(function(gr){return {g:gr.g,pts:gr.pts.map(function(p){return {n:p.n,o:false};})};});});
+  SUBJECTS.forEach(function(s){kb[s]=(KNOWLEDGE[s]||[]).map(function(gr){return {g:gr.g,pts:gr.pts.map(function(p){return {n:p.n,o:false,m:0,next:''};})};});});
   [['刑法',8],['民法',5],['法理学',3],['宪法',1],['法制史',1]].forEach(function(pair){
     var s=pair[0],n=pair[1],c=0,arr=kb[s]||[];
-    for(var i=0;i<arr.length&&c<n;i++){for(var j=0;j<arr[i].pts.length&&c<n;j++){arr[i].pts[j].o=true;c++;}}
+    for(var i=0;i<arr.length&&c<n;i++){for(var j=0;j<arr[i].pts.length&&c<n;j++){arr[i].pts[j].o=true;arr[i].pts[j].m=3;arr[i].pts[j].next=addDays(TODAY,7);c++;}}
   });
   return {
     version:3,paper:'法学',
@@ -763,9 +848,20 @@ var state;
 function load(){
   try{
     var raw=localStorage.getItem(KEY);
-    if(raw){state=JSON.parse(raw);if(!state.paper)state.paper='法学';if(!state.goals)state.goals=defaultState().goals;if(!state.knowledge)state.knowledge=defaultState().knowledge;}
+    if(raw){state=JSON.parse(raw);if(!state.paper)state.paper='法学';if(!state.goals)state.goals=defaultState().goals;if(!state.knowledge)state.knowledge=defaultState().knowledge;migrateKB();}
     else state=defaultState();
   }catch(e){state=defaultState();}
+}
+function migrateKB(){
+  try{
+    SUBJECTS.forEach(function(s){
+      var arr=state.knowledge[s];if(!arr)return;
+      arr.forEach(function(gr){if(!gr.pts)return;gr.pts.forEach(function(p){
+        if(p.m===undefined)p.m=p.o?3:0;
+        if(p.next===undefined)p.next=p.o?addDays(TODAY,7):'';
+      });});
+    });
+  }catch(e){}
 }
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 
@@ -977,7 +1073,8 @@ function renderKnowledge(){
       var gDone=gr.pts.filter(function(p){return p.o;}).length;
       groups+='<div class="kb-group"><div class="kb-group-title">'+gr.g+'<span style="margin-left:auto;font-weight:400;">'+gDone+'/'+gr.pts.length+'</span></div><div class="kb-points">';
       gr.pts.forEach(function(p,pi){
-        groups+='<div class="kb-point'+(p.o?' done':'')+'" onclick="togglePoint(\''+s+'\','+gi+','+pi+')"><span class="ck">'+(p.o?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>':'')+'</span><span>'+p.n+'</span></div>';
+        var dueCls=(!p.o&&p.next&&p.next<=TODAY)?' due':'';
+        groups+='<div class="kb-point'+(p.o?' done':'')+dueCls+'" onclick="togglePoint(\''+s+'\','+gi+','+pi+')">'+(dueCls?'<span class="due-dot"></span>':'<span class="ck">'+(p.o?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>':'')+'</span>')+'<span>'+p.n+'</span></div>';
       });
       groups+='</div></div>';
     });
@@ -992,9 +1089,91 @@ function togglePoint(s,gi,pi){
   var p=(kb[s]||[])[gi]&&(kb[s][gi].pts[pi]);
   if(!p){toast('数据有点异常，试试恢复示例数据');return;}
   p.o=!p.o;
+  if(p.o){p.m=3;p.next=addDays(TODAY,7);}else{p.m=0;p.next=addDays(TODAY,1);}
   var r=state.recite[s]||{last:''};r.last=TODAY;state.recite[s]=r;
   save();renderAll();
-  toast(p.o?'「'+p.n+'」已掌握，继续！':'「'+p.n+'」标记为待复习');
+  toast(p.o?'「'+p.n+'」标记为已掌握':'「'+p.n+'」标记为待复习');
+}
+
+/* ============ 今日任务（不背单词式） ============ */
+function collectPool(){
+  var pool=[],dueCount=0,newCount=0;
+  SUBJECTS.forEach(function(s){
+    var arr=state.knowledge[s]||[];
+    arr.forEach(function(gr,gi){gr.pts.forEach(function(p,pi){
+      if(p.o)return;
+      if(p.next&&p.next<=TODAY){pool.push({s:s,gi:gi,pi:pi,kind:'due'});dueCount++;}
+      else if(!p.next){pool.push({s:s,gi:gi,pi:pi,kind:'new'});newCount++;}
+    });});
+  });
+  return {pool:pool,dueCount:dueCount,newCount:newCount};
+}
+function renderTodayTasks(){
+  var r=collectPool();
+  $('ttDue').textContent=r.dueCount;
+  $('ttNew').textContent=r.newCount;
+}
+
+/* ============ 卡片背诵模式（不背单词式） ============ */
+var CARD_SESSION=null;
+function openCardMode(){
+  var r=collectPool();
+  if(r.pool.length===0){toast('今天的考点都过完啦，去打卡休息一下 ~');return;}
+  var duePool=[],newPool=[];
+  r.pool.forEach(function(x){if(x.kind==='due')duePool.push(x);else newPool.push(x);});
+  var session=duePool.slice(0,20);
+  for(var i=0;i<newPool.length&&session.length<20;i++)session.push(newPool[i]);
+  CARD_SESSION={pool:session,idx:0,results:[]};
+  $('cardMode').classList.add('show');
+  renderCard();
+  if(duePool.length>20)toast('待复习较多，先刷 20 个，完事再继续');
+}
+function closeCardMode(){
+  $('cardMode').classList.remove('show');
+  CARD_SESSION=null;
+}
+function renderCard(){
+  var s=CARD_SESSION;
+  if(!s)return;
+  var cur=s.pool[s.idx];
+  var p=state.knowledge[cur.s][cur.gi].pts[cur.pi];
+  $('cmProg').textContent=(s.idx+1)+' / '+s.pool.length;
+  $('cmSubj').textContent=cur.s;
+  $('cmCard').textContent=p.n;
+  $('cmGroup').textContent=(state.knowledge[cur.s][cur.gi].g||'')+' · '+(p.next?'复习':'新考点');
+  var pct=Math.round(s.idx/s.pool.length*100);
+  $('cmRing').innerHTML='<svg viewBox="0 0 120 120" width="112" height="112" role="img"><title>本轮进度</title><circle cx="60" cy="60" r="52" fill="none" stroke="#F6E3EC" stroke-width="11"/><circle cx="60" cy="60" r="52" fill="none" stroke="#E31B23" stroke-width="11" stroke-linecap="round" stroke-dasharray="'+(pct/100*326.7).toFixed(1)+' 326.7" transform="rotate(-90 60 60)"/><text x="60" y="66" text-anchor="middle" font-size="15" font-weight="700" fill="#B8141B">'+(s.idx+1)+'/'+s.pool.length+'</text></svg>';
+}
+function rateCard(kind){
+  var s=CARD_SESSION;
+  if(!s)return;
+  var cur=s.pool[s.idx];
+  var p=state.knowledge[cur.s][cur.gi].pts[cur.pi];
+  if(kind==='remember'){
+    p.m=(p.m||0)+1;
+    if(p.m>=3){p.o=true;p.next=addDays(TODAY,7);p.m=3;}
+    else{p.next=addDays(TODAY,3);}
+  }else if(kind==='fuzzy'){
+    p.m=Math.max(0,(p.m||0)-1);
+    p.next=addDays(TODAY,1);
+  }else{
+    p.m=0;p.next=addDays(TODAY,1);
+  }
+  s.results.push({s:cur.s,n:p.n,kind:kind});
+  var r=state.recite[cur.s]||{last:''};r.last=TODAY;state.recite[cur.s]=r;
+  save();
+  s.idx++;
+  if(s.idx>=s.pool.length){
+    var sum={remember:0,fuzzy:0,forget:0};
+    s.results.forEach(function(x){sum[x.kind]++;});
+    closeCardMode();
+    renderAll();
+    var left=collectPool().pool.length;
+    openConfirm('本轮完成！','记住了 '+sum.remember+' · 模糊 '+sum.fuzzy+' · 忘记了 '+sum.forget+(left>0?'<br>还有 '+left+' 个考点，休息一下再点「开始背诵」继续':'<br>今天的任务清完了，真棒！'),function(){});
+    toast('本轮完成');
+  }else{
+    renderCard();
+  }
 }
 function renderLogs(){
   var box=$('logList');box.innerHTML='';
@@ -1272,6 +1451,7 @@ function renderAll(){
   renderHeat();
   renderToday();
   renderKnowledge();
+  renderTodayTasks();
   renderLogs();
   renderClock();
   renderTrend();
