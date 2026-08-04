@@ -240,6 +240,10 @@ header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5p
 .kb-point:active{transform:scale(.97);}
 .kb-point.due{border-color:#E24B4A;background:#FFF5F5;}
 .kb-point.due .due-dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#E24B4A;margin-top:5px;}
+.ms-badge{
+  display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:700;
+  border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:1px;
+}
 
 /* today tasks (不背单词式今日任务) */
 .today-tasks{
@@ -1306,6 +1310,42 @@ var KNOWLEDGE_EXT={
       {n:'私分国有资产罪',d:'国家机关国有单位违反规定以单位名义将国有资产集体私分给个人，数额较大；区别于贪污（个人占有 vs 集体私分）'},
       {n:'徇私舞弊不移交刑事案件罪',d:'行政执法人员徇私舞弊对依法应当移交司法机关追究刑事责任的案件不移交，情节严重'},
       {n:'放纵走私罪',d:'海关工作人员徇私舞弊放纵走私，情节严重；与走私罪共犯区别：有无通谋'}
+    ]},
+    {g:'罪名对比类必背（车润海划重点）',pts:[
+      {n:'间谍罪的犯罪构成',d:'参加间谍组织或接受间谍组织及其代理人的任务，或者为敌人指示轰击目标，危害国家安全；属危害国家安全罪',s:'车'},
+      {n:'袭警罪',d:'暴力袭击正在依法执行职务的人民警察；处3年以下，使用枪支管制刀具或以驾驶机动车撞击等严重危及人身安全的处3-7年；2020年刑修十一独立成罪',s:'车'},
+      {n:'妨害安全驾驶罪',d:'对行驶中的公共交通工具的驾驶人员使用暴力或者抢控驾驶操纵装置，干扰公共交通工具正常行驶，危及公共安全；可处1年以下',s:'车'},
+      {n:'妨害药品管理罪',d:'生产销售国务院药品监督管理部门禁止使用的药品、未取得批准证明文件生产进口药品、编造生产检验记录、明知是上述药品仍销售，足以严重危害人体健康',s:'车'},
+      {n:'生产、销售有毒、有害食品罪',d:'在生产销售的食品中掺入有毒有害的非食品原料，或销售明知掺有有毒有害非食品原料的食品；行为犯',s:'车'},
+      {n:'为亲友非法牟利罪',d:'国有公司企业事业单位人员利用职务便利：将本单位盈利业务交由亲友经营、以明显高于市场价格向亲友经营管理单位采购商品、以明显低于市场价格向亲友单位销售商品，使国家利益遭受重大损失',s:'车'},
+      {n:'妨害信用卡管理罪',d:'明知是伪造的信用卡而持有运输、非法持有他人信用卡数量较大、使用虚假身份骗领信用卡、出售购买为他人提供伪造的信用卡或虚假身份骗领的信用卡',s:'车'},
+      {n:'贷款诈骗罪',d:'以非法占有为目的，编造引进资金项目等虚假理由、使用虚假经济合同证明文件或产权证明作担保、超出抵押物价值重复担保、以其他方法诈骗银行或其他金融机构贷款，数额较大',s:'车'},
+      {n:'组织、领导传销活动罪',d:'以推销商品提供服务为名，要求参加者缴纳费用或购买商品服务获得加入资格，按一定顺序组成层级，直接间接以发展人员数量作为计酬返利依据，引诱胁迫参加者继续发展他人骗取财物扰乱经济社会秩序',s:'车'},
+      {n:'雇用童工从事危重劳动罪',d:'违反劳动管理法规，雇用未满16周岁未成年人从事超强度体力劳动、从事高空井下作业或爆炸性易燃性放射性毒害性等危险环境下劳动，情节严重',s:'车'},
+      {n:'虐待被监护、看护人罪',d:'对未成年人、老年人、患病的人、残疾人等负有监护看护职责的人虐待被监护看护的人，情节恶劣；2015刑修九新增，主体不限于家庭成员',s:'车'},
+      {n:'负有照护职责人员性侵罪',d:'对已满14周岁不满16周岁的未成年女性负有监护、收养、看护、教育、医疗等特殊职责的人员与该未成年女性发生性关系；2020刑修十一新增',s:'车'},
+      {n:'违规制造、销售枪支罪',d:'依法被指定确定的枪支制造、销售企业，违反枪支管理规定制造销售枪支，后果严重（数量大、非法销售境外等）',s:'车'},
+      {n:'串通投标罪',d:'投标人相互串通投标报价损害招标人或其他投标人利益，或投标人与招标人串通投标损害国家集体公民合法利益，情节严重',s:'车'},
+      {n:'拒不支付劳动报酬罪',d:'以转移财产、逃匿等方法逃避支付劳动者劳动报酬或有能力支付而不支付，数额较大，经政府有关部门责令支付仍不支付',s:'车'},
+      {n:'利用影响力受贿罪',d:'国家工作人员的近亲属或其他关系密切的人，或离职的国家工作人员及其近亲属，利用其职务便利或影响力，通过其他国家工作人员职务上的行为为请托人谋取不正当利益，索取收受财物',s:'车'},
+      {n:'战时缓刑',d:'战时被判处3年以下有期徒刑没有现实危险宣告缓刑的犯罪军人，允许其戴罪立功；确有立功表现时可以撤销原判刑罚不以犯罪论处',s:'车'},
+      {n:'高利转贷罪与贷款诈骗罪的区别',d:'高利转贷：无非法占有目的，套取信贷资金转贷牟利；贷款诈骗：具有非法占有目的，骗取金融机构贷款',s:'车'},
+      {n:'洗钱罪与掩饰隐瞒犯罪所得罪的区别',d:'上游犯罪范围：洗钱限7类特定上游犯罪，掩饰隐瞒不限；行为方式：洗钱强调通过金融等渠道掩饰来源性质，掩饰隐瞒多为窝藏转移收购代销；上游犯罪主体',s:'车'},
+      {n:'贷款诈骗罪与合同诈骗罪的区别',d:'犯罪对象：贷款诈骗骗金融机构贷款；合同诈骗骗一般合同相对人财物；手段均可用合同形式但侵犯法益不同',s:'车'},
+      {n:'刑讯逼供罪与故意伤害罪的区别',d:'主体：刑讯逼供限司法工作人员，故意伤害为一般主体；目的：逼取口供vs伤害；转化：刑讯逼供致人伤残死亡的按故意伤害罪故意杀人罪从重处罚',s:'车'},
+      {n:'绑架罪与拐卖妇女儿童罪的区别',d:'目的不同：绑架勒索财物或劫持人质，拐卖以出卖为目的；对象不同：绑架不限对象，拐卖限妇女儿童',s:'车'},
+      {n:'虐待罪与虐待被监护看护人罪的区别',d:'主体：虐待罪限家庭成员，虐待被监护看护人罪限负有监护看护职责的人；对象：家庭成员vs被监护看护人',s:'车'},
+      {n:'诬告陷害罪与报复陷害罪的区别',d:'主体：诬告陷害为一般主体，报复陷害限国家机关工作人员；对象：诬告陷害不限，报复陷害限控告人申诉人批评人举报人；行为：捏造事实告发vs滥用职权报复',s:'车'},
+      {n:'侵占罪与职务侵占罪的区别',d:'主体：侵占罪为一般主体，职务侵占罪为公司企业等单位人员；对象：侵占罪为保管物遗忘物埋藏物，职务侵占罪为单位财物；是否利用职务便利',s:'车'},
+      {n:'挪用资金罪与挪用公款罪的区别',d:'主体：挪用资金罪为非国家工作人员，挪用公款罪为国家工作人员；对象：本单位资金vs公款（含特定款物）',s:'车'},
+      {n:'故意毁坏财物罪与破坏生产经营罪的区别',d:'对象：故意毁坏财物针对一般公私财物，破坏生产经营针对机器设备耕畜等生产经营资料；目的：破坏生产经营须出于泄愤报复等个人目的',s:'车'},
+      {n:'非法转让土地使用权罪与非法占用农用地罪的区别',d:'行为方式：非法转让土地使用权罪是转让牟利，非法占用农用地罪是占用并毁坏；对象：土地使用权vs农用地',s:'车'},
+      {n:'主犯与首要分子的关系',d:'交叉关系：犯罪集团的首要分子一定是主犯；聚众犯罪中的首要分子不一定是主犯（刑法分则明确规定才构成）；主犯不限于首要分子',s:'车'},
+      {n:'缓刑与死缓的区别',d:'性质：缓刑是刑罚执行制度，死缓是死刑执行制度；适用对象：缓刑适用于拘役3年以下有期徒刑，死缓适用于应当判处死刑者；法律后果不同',s:'车'},
+      {n:'不能犯与迷信犯的区别',d:'不能犯：具有犯罪故意，行为因手段或对象不能而未遂，可构成犯罪（未遂）；迷信犯：以迷信手段实施，缺乏现实侵害危险，不构成犯罪',s:'车'},
+      {n:'累犯与再犯的区别',d:'累犯：法定条件（前后罪刑度、时间5年）、从重处罚且不适用缓刑假释；再犯：无特殊限制，按一般情节处罚',s:'车'},
+      {n:'自首与坦白的关系',d:'自首：自动投案＋如实供述，可从轻减轻，犯罪较轻可免除；坦白：被动归案后如实供述，可以从轻；共同犯罪中自首须供述所知同案犯',s:'车'},
+      {n:'相对确定法定刑的立法类型',d:'规定最高限度的法定刑、规定最低限度的法定刑、规定最低与最高限度的法定刑、规定两种以上主刑或主刑与附加刑；我国以相对确定法定刑为原则',s:'车'}
     ]}
   ],
   '民法':[
@@ -1601,7 +1641,7 @@ function syncKnowledge(){
         if(!g){g={g:gr.g,pts:[]};dst.push(g);}
         gr.pts.forEach(function(p){
           if(!has[p.n]){
-            g.pts.push({n:p.n,o:false,m:0,next:'',d:p.d||''});
+            g.pts.push({n:p.n,o:false,m:0,next:'',d:p.d||'',s:p.s||''});
             has[p.n]=true;
           }else{
             for(var j=0;j<g.pts.length;j++){if(g.pts[j].n===p.n&&!g.pts[j].d)g.pts[j].d=p.d||'';}
@@ -1825,7 +1865,8 @@ function renderKnowledge(){
       groups+='<div class="kb-group"><div class="kb-group-title">'+gr.g+'<span style="margin-left:auto;font-weight:400;">'+gDone+'/'+gr.pts.length+'</span></div><div class="kb-points">';
       gr.pts.forEach(function(p,pi){
         var dueCls=(!p.o&&p.next&&p.next<=TODAY)?' due':'';
-        groups+='<div class="kb-point'+(p.o?' done':'')+dueCls+'" onclick="viewPoint(\''+s+'\','+gi+','+pi+')">'+(dueCls?'<span class="due-dot"></span>':'<span class="ck">'+(p.o?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>':'')+'</span>')+'<span>'+p.n+'</span></div>';
+        var badge=p.s?' <span class="ms-badge">'+p.s+'</span>':'';
+        groups+='<div class="kb-point'+(p.o?' done':'')+dueCls+'" onclick="viewPoint(\''+s+'\','+gi+','+pi+')">'+(dueCls?'<span class="due-dot"></span>':'<span class="ck">'+(p.o?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>':'')+'</span>')+'<span>'+p.n+badge+'</span></div>';
       });
       groups+='</div></div>';
     });
@@ -1842,7 +1883,7 @@ function viewPoint(s,gi,pi){
   var d=p.d||((KNOWLEDGE_D[s]||{})[p.n])||'暂无要点';
   $('modalTitle').textContent=s+' · '+p.n;
   $('modalBody').innerHTML='<div style="font-size:14px;line-height:1.9;color:var(--ink);margin-bottom:14px;">'+d+'</div>'+
-    '<div class="hint">当前状态：'+(p.o?'已掌握':'未掌握'+(p.next&&p.next<=TODAY?' · 待复习':' · '+(p.next?'下次 '+fmtDate(p.next):'新考点')))+'</div>';
+    '<div class="hint">'+(p.s?'<span class="ms-badge" style="font-size:11px;margin-right:6px;">'+p.s+'必背</span>':'')+'当前状态：'+(p.o?'已掌握':'未掌握'+(p.next&&p.next<=TODAY?' · 待复习':' · '+(p.next?'下次 '+fmtDate(p.next):'新考点')))+'</div>';
   $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">关闭</button><button class="btn '+(p.o?'ghost':'')+'" onclick="togglePointFromModal(\''+s+'\','+gi+','+pi+')">'+(p.o?'标记为待复习':'标记为已掌握')+'</button>';
   $('modalMask').classList.add('show');
 }
@@ -1905,7 +1946,7 @@ function renderCard(){
   var p=state.knowledge[cur.s][cur.gi].pts[cur.pi];
   $('cmProg').textContent=(s.idx+1)+' / '+s.pool.length;
   $('cmSubj').textContent=cur.s;
-  $('cmFront').textContent=p.n;
+  $('cmFront').innerHTML=p.n+(p.s?'<span class="ms-badge" style="font-size:11px;">'+p.s+'必背</span>':'');
   $('cmBack').textContent=p.d||((KNOWLEDGE_D[cur.s]||{})[p.n])||'暂无要点';
   $('cmGroup').textContent=(state.knowledge[cur.s][cur.gi].g||'')+' · '+(p.next?'复习':'新考点');
   var card=$('cmCard');
