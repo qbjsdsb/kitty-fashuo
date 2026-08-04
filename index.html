@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E31B23">
+<title>Kitty 法硕上岸小屋</title>
+<style>
+:root{
+  --red:#E31B23; --red-deep:#B8141B; --red-dark:#791F1F;
+  --pink:#F5A7C8; --pink-deep:#E86FA0; --pink-light:#FDE7F0;
+  --yellow:#F2C200; --green:#7AC74F; --purple:#B388EB;
+  --ink:#3D3D3D; --ink-soft:#8A8A8A;
+  --line:#F2CBDD; --bg:#FFF9FB;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  background-color:var(--bg);
+  background-image:radial-gradient(#FBD9E8 2.2px,transparent 2.2px);
+  background-size:30px 30px;
+  color:var(--ink);line-height:1.55;
+  padding-bottom:env(safe-area-inset-bottom);min-height:100vh;
+}
+.wrap{max-width:780px;margin:0 auto;padding:14px 14px 70px;}
+
+/* header */
+header{
+  background:#fff;border:2.5px solid var(--line);border-radius:24px;
+  padding:16px 16px 12px;display:flex;align-items:center;gap:13px;
+  position:relative;box-shadow:0 4px 0 rgba(227,27,35,.07);
+}
+header .kitty{flex:0 0 auto;}
+header h1{font-size:21px;font-weight:700;color:var(--red-deep);line-height:1.2;letter-spacing:.5px;}
+header .sub{font-size:12.5px;color:var(--ink-soft);margin-top:1px;}
+header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5px;}
+.bow-deco{position:absolute;top:-11px;right:16px;}
+.paper-switch{
+  margin-left:auto;flex:0 0 auto;display:flex;background:var(--pink-light);
+  border:2px solid var(--line);border-radius:999px;padding:3px;gap:2px;
+}
+.paper-switch button{
+  border:none;background:transparent;font-family:inherit;font-size:12.5px;font-weight:600;
+  color:var(--ink-soft);padding:7px 12px;border-radius:999px;cursor:pointer;min-height:36px;
+}
+.paper-switch button.on{background:var(--red);color:#fff;}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border:none;cursor:pointer;font-family:inherit;
+  font-size:15px;font-weight:600;color:#fff;
+  background:var(--red);border-radius:999px;
+  padding:12px 20px;min-height:44px;
+  transition:transform .05s ease,opacity .15s;
+}
+.btn:active{transform:scale(.96);}
+.btn.pink{background:var(--pink-deep);}
+.btn.ghost{background:#fff;color:var(--red-deep);border:2px solid var(--line);}
+.btn.small{font-size:13px;padding:6px 14px;min-height:34px;}
+.btn.mini{font-size:13px;padding:4px 12px;min-height:32px;font-weight:600;color:#fff;}
+.btn.mini.ghost{background:#fff;color:var(--red-deep);border:2px solid var(--line);}
+.btn.block{width:100%;}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin:14px 0;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex:0 0 auto;white-space:nowrap;background:#fff;border:2px solid var(--line);
+  border-radius:999px;padding:9px 17px;font-size:14px;font-weight:600;color:var(--ink-soft);
+  cursor:pointer;display:flex;align-items:center;gap:7px;min-height:44px;
+}
+.tab svg{flex:0 0 auto;}
+.tab.on{background:var(--red);border-color:var(--red);color:#fff;}
+
+/* today */
+.today-card{background:#fff;border:2.5px solid var(--red);border-radius:22px;padding:14px 16px;margin-bottom:14px;}
+.tc-title{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--red-deep);}
+.tc-title .dot{width:10px;height:10px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.35;}}
+.today-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.today-item{
+  display:flex;align-items:center;gap:10px;border:2px solid var(--line);
+  border-radius:14px;padding:10px 12px;background:#FFFDFE;font-size:14px;
+}
+.today-item.overdue{border-color:var(--red);background:#FFF5F5;}
+.today-item .lb{flex:1;min-width:0;}
+.today-item .lb b{color:var(--red-deep);}
+.today-item.overdue .lb b{color:var(--red);}
+.today-item .why{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+.today-empty{font-size:14px;color:#2F9E63;font-weight:600;padding:6px 2px;}
+
+/* cards */
+.card{background:#fff;border:2.5px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px;position:relative;}
+.c-head{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700;margin-bottom:12px;}
+.c-head .deco{margin-left:auto;flex:0 0 auto;opacity:.9;}
+.c-head .badge{
+  font-size:11.5px;font-weight:600;color:#fff;background:var(--red);
+  padding:2px 10px;border-radius:999px;margin-left:6px;
+}
+.hint{font-size:12.5px;color:var(--ink-soft);margin-bottom:8px;line-height:1.6;}
+
+/* countdown */
+.countdown{display:flex;align-items:center;gap:18px;}
+.cd-num{font-size:54px;font-weight:700;color:var(--red);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-1px;}
+.cd-unit{font-size:13px;color:var(--ink-soft);margin-top:4px;}
+.cd-info{font-size:13px;color:var(--ink-soft);line-height:1.75;}
+.cd-info b{color:var(--red-deep);}
+.edit-link{display:inline-block;margin-top:4px;font-size:12px;color:var(--pink-deep);text-decoration:underline;cursor:pointer;}
+
+/* goal card */
+.goal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+.goal-box{background:#FFFDFE;border:2px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center;}
+.goal-box .n{font-size:22px;font-weight:700;color:var(--red-deep);line-height:1.2;font-variant-numeric:tabular-nums;}
+.goal-box .l{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+.goal-box.hit .n{color:#2F9E63;}
+.goal-gap{
+  display:flex;align-items:center;gap:12px;background:var(--pink-light);
+  border:2px dashed var(--pink);border-radius:14px;padding:11px 14px;font-size:13.5px;line-height:1.6;
+}
+.goal-gap b{color:var(--red-deep);}
+
+/* heat */
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:6px;}
+.heat .d{aspect-ratio:1;border-radius:6px;background:#F6E3EC;position:relative;min-height:16px;}
+.heat .d.on{background:var(--pink-deep);}
+.heat .d.today{outline:2px solid var(--red);}
+.heat .d .day{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:10px;color:#fff;font-weight:600;}
+.heat-legend{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink-soft);margin-top:8px;flex-wrap:wrap;}
+.heat-legend .sq{width:12px;height:12px;border-radius:4px;background:#F6E3EC;display:inline-block;}
+.heat-legend .sq.on{background:var(--pink-deep);}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.stat{background:#FFFDFE;border:2px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center;}
+.stat .n{font-size:22px;font-weight:700;color:var(--red-deep);line-height:1.2;font-variant-numeric:tabular-nums;}
+.stat .l{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+
+/* phase */
+.phase{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#FFF1F4,#FFF9FB);border:2px dashed var(--pink);border-radius:16px;padding:12px 14px;}
+.phase .ph{font-size:14px;line-height:1.7;}
+.phase .ph b{color:var(--red-deep);}
+.phase .tag{display:inline-block;background:var(--red);color:#fff;font-size:12px;padding:2px 10px;border-radius:999px;margin-right:6px;font-weight:600;}
+
+/* round banner */
+.round-banner{
+  display:flex;align-items:center;gap:10px;
+  background:linear-gradient(90deg,#FFF6E0,#FFFDF5);
+  border:2px dashed #EFC94C;border-radius:16px;padding:11px 14px;margin-bottom:14px;font-size:13.5px;line-height:1.6;
+}
+.round-banner .rb-tag{flex:0 0 auto;background:var(--yellow);color:#633806;font-size:12px;font-weight:700;padding:3px 12px;border-radius:999px;}
+.round-banner b{color:#854F0B;}
+
+/* subject progress */
+.subject{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:2px dashed #F6DCE7;}
+.subject:last-child{border-bottom:none;}
+.subject .s-name{flex:0 0 72px;font-size:14px;font-weight:700;}
+.subject .s-bar{flex:1;}
+.subject .s-info{font-size:12px;color:var(--ink-soft);margin-bottom:5px;display:flex;justify-content:space-between;gap:8px;}
+.subject .bar{height:14px;border-radius:999px;background:#F6E3EC;overflow:hidden;}
+.subject .bar i{display:block;height:100%;border-radius:999px;transition:width .4s ease;}
+.subject .s-btn{flex:0 0 auto;}
+.subject .s-btn .btn{min-height:40px;padding:8px 15px;}
+
+/* hotpoints */
+.hot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:6px;}
+.hot-chip{
+  display:flex;align-items:center;gap:7px;background:#FFFDFE;border:2px solid var(--line);
+  border-radius:12px;padding:8px 10px;font-size:12.5px;cursor:pointer;transition:all .12s;
+}
+.hot-chip .ck{
+  flex:0 0 auto;width:19px;height:19px;border-radius:50%;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+}
+.hot-chip.done{background:var(--pink-light);border-color:var(--pink);}
+.hot-chip.done .ck{background:var(--pink-deep);border-color:var(--pink-deep);color:#fff;}
+.hot-chip:active{transform:scale(.96);}
+.hot-prog{font-size:12px;color:var(--ink-soft);margin:8px 0 2px;}
+
+/* logs */
+.log-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+.log-item{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:9px 12px;font-size:13px;background:#FFFDFE;}
+.log-item .date{flex:0 0 74px;color:var(--ink-soft);font-size:12px;font-variant-numeric:tabular-nums;}
+.log-item .txt{flex:1;min-width:0;}
+.log-item .del{cursor:pointer;color:var(--ink-soft);flex:0 0 auto;padding:4px;}
+.log-item .del:active{color:var(--red);}
+.pill-tag{display:inline-block;font-size:11px;font-weight:600;color:var(--pink-deep);background:var(--pink-light);border-radius:999px;padding:1px 8px;margin-left:5px;}
+
+/* forms */
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+.field input,.field select,.field textarea{
+  width:100%;font-family:inherit;font-size:16px;border:2px solid var(--line);
+  border-radius:14px;padding:11px 14px;background:#FFFDFE;color:var(--ink);outline:none;min-height:44px;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink-deep);}
+.field textarea{resize:vertical;min-height:64px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* stars */
+.stars{display:inline-flex;gap:2px;}
+.stars .st{width:22px;height:22px;cursor:pointer;color:#E8D5E0;}
+.stars .st.on{color:var(--yellow);}
+
+/* err-type bar */
+.errbar{display:flex;height:14px;border-radius:999px;overflow:hidden;background:#F6E3EC;margin-top:8px;}
+.errbar i{display:block;height:100%;}
+.err-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--ink-soft);margin-top:7px;}
+.err-legend .lg{display:flex;align-items:center;gap:5px;}
+.err-legend .sw{width:11px;height:11px;border-radius:3px;display:inline-block;}
+
+/* clock */
+.clock-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;}
+.clock-table th,.clock-table td{border:1.5px solid var(--line);padding:8px 10px;text-align:left;}
+.clock-table th{background:var(--pink-light);color:var(--red-deep);font-weight:600;font-size:12.5px;}
+.clock-table td{background:#FFFDFE;}
+.clock-table td:last-child{font-weight:600;color:var(--red-deep);font-variant-numeric:tabular-nums;}
+
+/* charts */
+.chart-box{width:100%;overflow-x:auto;}
+.chart-box svg{display:block;min-width:280px;width:100%;height:auto;}
+.legend-row{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--ink-soft);margin-top:8px;}
+.legend-row .lg{display:flex;align-items:center;gap:6px;}
+.legend-row .sw{width:12px;height:12px;border-radius:4px;}
+
+/* modal */
+.modal-mask{position:fixed;inset:0;background:rgba(61,61,61,.45);z-index:99;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-mask.show{display:flex;}
+.modal{background:#fff;border:3px solid var(--line);border-radius:22px;padding:20px;width:100%;max-width:360px;max-height:86vh;overflow-y:auto;}
+.modal h3{font-size:16px;font-weight:700;color:var(--red-deep);margin-bottom:10px;}
+.modal p{font-size:14px;color:var(--ink);margin-bottom:16px;}
+.modal .mrow{display:flex;gap:10px;justify-content:flex-end;}
+.modal .mrow .btn{min-height:44px;}
+.modal .field{margin-bottom:12px;}
+
+/* toast */
+#toast{
+  position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;font-size:14px;padding:11px 22px;border-radius:999px;
+  z-index:120;opacity:0;pointer-events:none;transition:all .25s ease;max-width:86vw;text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* footer */
+footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px;line-height:1.9;}
+.backup-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:4px;}
+
+/* usage */
+.usage{
+  background:#FFFDF5;border:2px solid #EFC94C;border-radius:18px;margin-bottom:14px;overflow:hidden;
+}
+.usage summary{
+  list-style:none;cursor:pointer;padding:12px 16px;font-size:14px;font-weight:700;color:#854F0B;
+  display:flex;align-items:center;gap:8px;
+}
+.usage summary::-webkit-details-marker{display:none;}
+.usage .u-body{padding:0 16px 14px;font-size:13px;color:var(--ink);line-height:1.9;}
+.usage .u-body b{color:var(--red-deep);}
+
+/* responsive */
+@media (max-width:520px){
+  .wrap{padding:12px 10px 60px;}
+  header{padding:14px;}
+  header h1{font-size:17px;}
+  header .kitty svg{width:52px;height:46px;}
+  .bow-deco{display:none;}
+  .countdown{flex-direction:column;align-items:flex-start;gap:10px;}
+  .cd-num{font-size:46px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .goal-grid{grid-template-columns:repeat(2,1fr);}
+  .subject{flex-wrap:wrap;}
+  .subject .s-name{flex:0 0 100%;}
+  .frow{grid-template-columns:1fr;}
+  .paper-switch button{padding:6px 10px;font-size:12px;}
+  .today-item{flex-wrap:wrap;}
+  .today-item .btn{margin-left:auto;}
+  .hot-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kitty">
+    <svg width="70" height="62" viewBox="0 0 120 106" role="img" aria-label="Hello Kitty 风格白色小猫">
+      <title>Kitty 小猫</title>
+      <desc>白猫头像，左耳红色蝴蝶结</desc>
+      <ellipse cx="36" cy="24" rx="17" ry="21" fill="#FFFFFF" stroke="#3D3D3D" stroke-width="3"/>
+      <ellipse cx="84" cy="24" rx="17" ry="21" fill="#FFFFFF" stroke="#3D3D3D" stroke-width="3"/>
+      <ellipse cx="36" cy="26" rx="8" ry="11" fill="#F5A7C8"/>
+      <ellipse cx="84" cy="26" rx="8" ry="11" fill="#F5A7C8"/>
+      <ellipse cx="60" cy="62" rx="50" ry="40" fill="#FFFFFF" stroke="#3D3D3D" stroke-width="3"/>
+      <ellipse cx="41" cy="60" rx="4" ry="6.5" fill="#3D3D3D"/>
+      <ellipse cx="79" cy="60" rx="4" ry="6.5" fill="#3D3D3D"/>
+      <ellipse cx="60" cy="69" rx="4.5" ry="3.6" fill="#F2C200" stroke="#3D3D3D" stroke-width="1.5"/>
+      <path d="M18 62 L38 64 M18 70 L38 68 M82 64 L102 62 M82 68 L102 70" stroke="#3D3D3D" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <g transform="translate(88,6)">
+        <path d="M-13,-9 C-21,-15 -25,-5 -17,-1 C-25,3 -21,13 -13,7 Z" fill="#E31B23" stroke="#B8141B" stroke-width="1.5"/>
+        <path d="M13,-9 C21,-15 25,-5 17,-1 C25,3 21,13 13,7 Z" fill="#E31B23" stroke="#B8141B" stroke-width="1.5"/>
+        <circle cx="0" cy="-1" r="4.6" fill="#E31B23" stroke="#B8141B" stroke-width="1.5"/>
+      </g>
+    </svg>
+  </div>
+  <div>
+    <h1>Kitty 法硕上岸小屋</h1>
+    <p class="sub">背诵 · 刷题 · 错题 · 目标，一本小本本全记下</p>
+    <p class="date" id="headerDate"></p>
+  </div>
+  <div class="paper-switch" id="paperSwitch">
+    <button data-p="法学" class="on">法学</button>
+    <button data-p="非法学">非法学</button>
+  </div>
+  <div class="bow-deco">
+    <svg width="34" height="21" viewBox="0 0 40 24" role="img" aria-label="红色蝴蝶结">
+      <path d="M20 9 C11 1 2 7 8 13 C2 19 11 25 20 17 C29 25 38 19 32 13 C38 7 29 1 20 9 Z" fill="#E31B23"/>
+      <circle cx="20" cy="13" r="4.2" fill="#F5A7C8" stroke="#B8141B" stroke-width="1.4"/>
+    </svg>
+  </div>
+</header>
+
+<details class="usage" id="usageBox">
+  <summary>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 1 1 12 12.5 V14 M12 17 H12.01"/></svg>
+    第一次用？30 秒看懂这个小屋
+  </summary>
+  <div class="u-body">
+    <b>每天打开看「今天要处理」</b>：逾期背诵会自动滚进来，点一下按钮就算处理完。<br>
+    <b>背诵</b>：按《考试分析》章节设目标（刑法21章/民法21章/法理13章/宪法5章/法制史7章），背一章点一格。<br>
+    <b>刷题</b>：按题型记一笔（法学卷主观题占 73%，简答/论述/案例是大头）。<br>
+    <b>错题夹</b>：记下科目/考点/错因，掌握度 3 星，每 3 天会提醒你重做。<br>
+    <b>数据安全</b>：都存在你浏览器里，每周导出一份备份，换设备也能带走。
+  </div>
+</details>
+
+<div class="today-card">
+  <div class="tc-title"><span class="dot"></span>今天要处理</div>
+  <div class="today-list" id="todayList"></div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <div class="tab on" data-t="home">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 L12 3 L21 10.5 V21 H15 V14 H9 V21 H3 Z"/></svg>今天
+  </div>
+  <div class="tab" data-t="recite">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 C8 3 16 3 20 5 V19 C16 17 8 17 4 19 Z"/><path d="M4 5 V19 M20 5 V19"/></svg>背诵
+  </div>
+  <div class="tab" data-t="quiz">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 H20 V21 H8 Z"/><path d="M4 6 H8 M4 12 H8 M4 18 H8"/><path d="M11 7 H17 M11 11 H17 M11 15 H14"/></svg>刷题
+  </div>
+  <div class="tab" data-t="mistake">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 C5 15 3 10 3 7.5 C3 5 5 3 7.5 3 C9.5 3 11.2 4 12 5.5 C12.8 4 14.5 3 16.5 3 C19 3 21 5 21 7.5 C21 10 19 15 12 21 Z"/></svg>错题夹
+  </div>
+</nav>
+
+<!-- ===== 今天 ===== -->
+<section id="pg-home">
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3 V7 M16 3 V7 M3 10 H21"/></svg>
+      考研倒计时
+      <span class="deco"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 C9 7 5 8 5 12 A7 7 0 1 0 19 12 C19 8 15 7 12 3 Z"/></svg></span>
+    </div>
+    <div class="countdown">
+      <div><div class="cd-num" id="cdNum">--</div><div class="cd-unit">天 · 距离初试</div></div>
+      <div class="cd-info">
+        2027 考研初试预计 <b id="cdDate">2026-12-19</b>（以研招网公告为准）<br>
+        已连续学习 <b id="cdStreak">0</b> 天，别断哦
+        <span class="edit-link" onclick="openEditDate()">改考试日期</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg>
+      目标分数卡
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="#F5A7C8"/></svg></span>
+    </div>
+    <div class="hint">参考复旦 2026 法硕（法学）实录：录取均分 362。目标可改，每周看看差距心里有数。</div>
+    <div class="goal-grid" id="goalGrid"></div>
+    <div class="goal-gap" id="goalGap"></div>
+    <div class="edit-link" onclick="openEditGoals()" style="margin-top:10px;">设置你的目标分数</div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M8 2 V6 M16 2 V6 M3 9 H21"/></svg>
+      学习打卡（近 8 周）
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg></span>
+    </div>
+    <div class="heat" id="heatMap"></div>
+    <div class="heat-legend">
+      <span>没学</span><span class="sq"></span>
+      <span>打过卡</span><span class="sq on"></span>
+      <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:12px;border-radius:4px;outline:2px solid #E31B23;background:#F6E3EC;"></span>今天</span>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" onclick="checkinToday()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>
+        今天学过了，打卡！
+      </button>
+      <button class="btn ghost" onclick="clearCheckins()">清空打卡</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19 L20 5 M8 5 H20 V17"/></svg>
+      复习总览
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stRecite">0%</div><div class="l">背诵完成度</div></div>
+      <div class="stat"><div class="n" id="stQuiz">0</div><div class="l">累计刷题</div></div>
+      <div class="stat"><div class="n" id="stAcc">0%</div><div class="l">平均正确率</div></div>
+      <div class="stat"><div class="n" id="stMist">0</div><div class="l">待复习错题</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L2 8 L12 13 L22 8 Z"/><path d="M6 10.5 V15 C6 17 9 19 12 19 C15 19 18 17 18 15 V10.5"/><path d="M22 8 V14"/></svg>
+      备考阶段小提示
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.2" stroke-linecap="round"><path d="M12 5 V19 M6 11 H18"/></svg></span>
+    </div>
+    <div class="phase">
+      <svg width="32" height="20" viewBox="0 0 40 24" aria-hidden="true">
+        <path d="M20 9 C11 1 2 7 8 13 C2 19 11 25 20 17 C29 25 38 19 32 13 C38 7 29 1 20 9 Z" fill="#E31B23"/>
+        <circle cx="20" cy="13" r="4.2" fill="#F5A7C8"/>
+      </svg>
+      <div class="ph" id="phaseText"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 背诵 ===== -->
+<section id="pg-recite" style="display:none">
+  <div class="round-banner" id="roundBanner"></div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 C8 3 16 3 20 5 V19 C16 17 8 17 4 19 Z"/><path d="M4 5 V19 M20 5 V19"/></svg>
+      五科背诵进度（按《考试分析》章节）
+      <span class="badge" id="roundBadge">二轮</span>
+      <span class="deco"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.2" stroke-linecap="round"><path d="M12 5 C9 7 6 7 5 11 C4 15 7 20 12 20 C17 20 20 15 19 11 C18 7 15 7 12 5 Z"/></svg></span>
+    </div>
+    <div id="subjectList"></div>
+    <div class="edit-link" onclick="openEditTargets()" style="margin-top:10px;">调整每科背诵目标（章/考点数）</div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L2 8 L12 13 L22 8 Z"/><path d="M6 10.5 V15 C6 17 9 19 12 19 C15 19 18 17 18 15 V10.5"/></svg>
+      真题高频考点库
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="hint">历年真题反复出现的考点，会一个点一个（点击标记），不会的优先背。</div>
+    <div id="hotList"></div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20 H21 M16.5 3.5 A2.1 2.1 0 0 1 19.5 6.5 L7 19 L3 21 L5 17 Z"/></svg>
+      背诵小本本
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="frow">
+      <div class="field"><label>科目</label>
+        <select id="logSubj"><option>刑法</option><option>民法</option><option>法理学</option><option>宪法</option><option>法制史</option></select>
+      </div>
+      <div class="field"><label>背的是哪一章/考点</label>
+        <input id="logNote" type="text" placeholder="比如：犯罪构成四要件" maxlength="40">
+      </div>
+    </div>
+    <div class="field">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="logKoujue" style="width:auto;min-height:auto;">
+        记个口诀/答题框架（如"主体主观客观客体"）
+      </label>
+    </div>
+    <button class="btn block" onclick="addLog()">记下来！</button>
+    <div class="log-list" id="logList"></div>
+  </div>
+</section>
+
+<!-- ===== 刷题 ===== -->
+<section id="pg-quiz" style="display:none">
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 H20 V21 H8 Z"/><path d="M4 6 H8 M4 12 H8 M4 18 H8"/><path d="M11 7 H17 M11 11 H17 M11 15 H14"/></svg>
+      刷题记录本
+      <span class="badge" id="subjWeightBadge">主观题占73%</span>
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2 H6 C5 2 4 3 4 4 V20 C4 21 5 22 6 22 H18 C19 22 20 21 20 20 V8 Z"/><path d="M14 2 V8 H20 M8 13 H16 M8 17 H13"/></svg></span>
+    </div>
+    <div class="frow">
+      <div class="field"><label>科目</label>
+        <select id="qSubj"><option>刑法</option><option>民法</option><option>法理学</option><option>宪法</option><option>法制史</option></select>
+      </div>
+      <div class="field"><label>题型</label><select id="qType"></select></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>做了几题</label><input id="qCount" type="number" min="1" max="999" placeholder="如 10"></div>
+      <div class="field"><label>做对几题</label><input id="qCorrect" type="number" min="0" max="999" placeholder="如 8"></div>
+    </div>
+    <button class="btn block" onclick="addQuiz()">记一笔！</button>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7 V12 L15 14"/></svg>
+      模考答题时钟（180 分钟怎么分）
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.2" stroke-linecap="round"><path d="M12 5 V19 M6 11 H18"/></svg></span>
+    </div>
+    <div class="hint">规律：简答/论述 ≈ 分值+2 分钟；案例分析 ≈ 分值+3~5 分钟。模考时照着掐表。</div>
+    <div id="clockBox"></div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 L8 11 L13 14 L21 5"/><path d="M15 5 H21 V11"/></svg>
+      近 14 天正确率走势
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="chart-box" id="trendChart"></div>
+    <div class="legend-row"><span class="lg"><span class="sw" style="background:#E31B23;"></span>正确率 %</span><span class="lg"><span class="sw" style="background:#F5A7C8;"></span>80% 目标线</span></div>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><path d="M6 20 V12 M12 20 V5 M18 20 V9"/></svg>
+      各科正确率对比
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="chart-box" id="subjChart"></div>
+    <div class="legend-row">
+      <span class="lg"><span class="sw" style="background:#E31B23;"></span>刑法</span>
+      <span class="lg"><span class="sw" style="background:#F17EB0;"></span>民法</span>
+      <span class="lg"><span class="sw" style="background:#F2C200;"></span>法理</span>
+      <span class="lg"><span class="sw" style="background:#7AC74F;"></span>宪法</span>
+      <span class="lg"><span class="sw" style="background:#B388EB;"></span>法制史</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 错题夹 ===== -->
+<section id="pg-mistake" style="display:none">
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21 C5 15 3 10 3 7.5 C3 5 5 3 7.5 3 C9.5 3 11.2 4 12 5.5 C12.8 4 14.5 3 16.5 3 C19 3 21 5 21 7.5 C21 10 19 15 12 21 Z"/></svg>
+      记一道错题
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5A7C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20 H21 M16.5 3.5 A2.1 2.1 0 0 1 19.5 6.5 L7 19 L3 21 L5 17 Z"/></svg></span>
+    </div>
+    <div class="frow">
+      <div class="field"><label>科目</label>
+        <select id="mSubj"><option>刑法</option><option>民法</option><option>法理学</option><option>宪法</option><option>法制史</option></select>
+      </div>
+      <div class="field"><label>题型</label><select id="mTypeQ"></select></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>错因类型</label><select id="mType"></select></div>
+    </div>
+    <div class="field"><label>考点是什么（一句话）</label><input id="mPoint" type="text" placeholder="比如：善意取得构成要件" maxlength="60"></div>
+    <div class="field">
+      <label>现在掌握得咋样？</label>
+      <div class="stars" id="mStars">
+        <span class="st" data-v="1"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+        <span class="st" data-v="2"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+        <span class="st" data-v="3"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+      </div>
+      <div style="font-size:12px;color:var(--ink-soft);margin-top:4px;">1 星 = 没底 · 2 星 = 有点模糊 · 3 星 = 基本会了</div>
+    </div>
+    <button class="btn block" onclick="addMistake()">放进错题夹！</button>
+  </div>
+
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9 8 H15 M9 12 H15 M9 16 H12"/></svg>
+      错题夹（<span id="mistCount">0</span>）
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="errbar" id="errBar"></div>
+    <div class="err-legend" id="errLegend"></div>
+    <div class="log-list" id="mistList"></div>
+    <div class="legend-row" style="margin-top:10px;">
+      <span class="lg"><span class="sw" style="background:#F2C200;"></span>星星 = 掌握度</span>
+      <span class="lg">每 3 天重做一遍更稳</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>数据都存在你自己浏览器里，放心用</div>
+  <div class="backup-bar">
+    <button class="btn pink small" onclick="exportData()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 V15 M7 10 L12 15 L17 10 M4 19 H20"/></svg>导出备份
+    </button>
+    <button class="btn small" style="background:var(--pink-deep);" onclick="document.getElementById('importFile').click()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15 V3 M7 8 L12 3 L17 8 M4 19 H20"/></svg>导入恢复
+    </button>
+    <button class="btn ghost small" onclick="restoreDemo()">恢复示例数据</button>
+    <button class="btn ghost small" onclick="openClear()">清空数据</button>
+  </div>
+  <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(event)">
+  <div style="margin-top:8px;">建议每周导出一份，换设备也能带走 ~</div>
+</footer>
+</div>
+
+<div class="modal-mask" id="modalMask">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="mrow" id="modalBtns"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ============ 工具 ============ */
+var KEY='wb_fashuo_kitty_v2';
+var SUBJECTS=['刑法','民法','法理学','宪法','法制史'];
+var SUBJ_COLORS={'刑法':'#E31B23','民法':'#F17EB0','法理学':'#F2C200','宪法':'#7AC74F','法制史':'#B388EB'};
+var SUBJ_SHORT={'刑法':'刑法','民法':'民法','法理学':'法理','宪法':'宪法','法制史':'法制史'};
+var TYPES={'法学':['单选','多选','简答','论述','案例分析'],'非法学':['单选','多选','简答','法条分析','案例分析']};
+var ERR_TYPES=['概念混淆','法条记忆','理解偏差','要点遗漏','表述不规范','框架不全','粗心'];
+var CLOCK={
+  '法学':[
+    {t:'397 基础（单选20+多选20）',m:'≤40 分钟'},
+    {t:'397 简答 4 题（每题10分）',m:'~40 分钟'},
+    {t:'397 论述 2 题（每题15分）',m:'~35 分钟'},
+    {t:'397 案例分析 2 题（每题20分）',m:'~40 分钟'},
+    {t:'涂卡 + 检查',m:'10-20 分钟'},
+    {t:'497 综合（单选20+多选20）',m:'~45 分钟'},
+    {t:'497 简答 3 题',m:'~30 分钟'},
+    {t:'497 分析论述 80 分（末题20分）',m:'~90 分钟'}
+  ],
+  '非法学':[
+    {t:'397 基础（单选20+多选5）',m:'~40 分钟'},
+    {t:'397 简答 2 题',m:'~20 分钟'},
+    {t:'397 法条分析 2 题',m:'~30 分钟'},
+    {t:'397 案例分析 2 题',m:'~40 分钟'},
+    {t:'涂卡 + 检查',m:'~15 分钟'},
+    {t:'497 综合（单选20+多选5）',m:'~45 分钟'},
+    {t:'497 简答 2 题',m:'~20 分钟'},
+    {t:'497 分析题 + 论述题',m:'~80 分钟'}
+  ]
+};
+var HOTPOINTS={
+  '刑法':['犯罪构成四要件','正当防卫与紧急避险','共同犯罪（主/从/胁从/教唆）','犯罪未遂与中止','累犯与自首立功','因果关系判断','转化型抢劫','抢劫/盗窃/诈骗区分'],
+  '民法':['物权变动（公示公信）','善意取得与无权处分','合同效力（生效/撤销/无效）','违约责任归责原则','民事法律行为效力类型','诉讼时效与期间','人格权保护','侵权责任归责原则'],
+  '法理学':['法的特征与本质','法的渊源与效力','法律解释方法','法律关系三要素','法律责任构成要件','法治原则与全面依法治国'],
+  '宪法':['公民基本权利','人民代表大会制度','选举制度','国家机构职权','宪法监督制度','宪法修正案'],
+  '法制史':['唐律疏议','大明律','清末修宪','民国六法','革命根据地法制','古代法典演变']
+};
+function todayStr(d){var x=d||new Date();return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
+function addDays(ds,n){var x=new Date(ds+'T00:00:00');x.setDate(x.getDate()+n);return todayStr(x);}
+function fmtDate(ds){if(!ds)return'';var p=ds.split('-');return p[1]+'月'+p[2]+'日';}
+function fmtCN(ds){var p=ds.split('-');return p[0]+'年'+p[1]+'月'+p[2]+'日';}
+function dayDiff(a,b){return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000);}
+function $(id){return document.getElementById(id);}
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2200);}
+
+/* ============ 数据 ============ */
+var TODAY=todayStr();
+function defaultState(){
+  var yest=addDays(TODAY,-1);
+  var ck=[];for(var i=8;i>=0;i--)ck.push(addDays(TODAY,-i));
+  var hp={};
+  SUBJECTS.forEach(function(s){hp[s]=HOTPOINTS[s].map(function(n){return {n:n,o:false};});});
+  return {
+    version:2,paper:'法学',
+    examDate:'2026-12-19',
+    goals:{total:362,political:65,english:64,major:233,current:null},
+    checkins:ck,
+    recite:{'刑法':{done:8,total:21,last:yest},'民法':{done:5,total:21,last:'2026-07-30'},'法理学':{done:3,total:13,last:TODAY},'宪法':{done:1,total:5,last:''},'法制史':{done:1,total:7,last:''}},
+    reciteLog:[
+      {date:TODAY,subj:'法理学',note:'法的价值：自由-正义-秩序-效率',koujue:true},
+      {date:yest,subj:'刑法',note:'犯罪构成四要件',koujue:true},
+      {date:'2026-07-30',subj:'民法',note:'物权变动规则，还没背完',koujue:false}
+    ],
+    quiz:[
+      {date:addDays(TODAY,-3),subj:'刑法',type:'单选',count:20,correct:15},
+      {date:addDays(TODAY,-3),subj:'刑法',type:'简答',count:4,correct:3},
+      {date:addDays(TODAY,-2),subj:'民法',type:'多选',count:10,correct:6},
+      {date:addDays(TODAY,-1),subj:'宪法',type:'单选',count:20,correct:16},
+      {date:TODAY,subj:'法理学',type:'论述',count:2,correct:1}
+    ],
+    mistakes:[
+      {id:1,date:addDays(TODAY,-5),subj:'刑法',qtype:'案例分析',point:'犯罪未遂与犯罪中止的区分',type:'概念混淆',mastery:1,redo:''},
+      {id:2,date:addDays(TODAY,-4),subj:'民法',qtype:'案例分析',point:'善意取得的构成要件',type:'要点遗漏',mastery:2,redo:addDays(TODAY,-1)},
+      {id:3,date:addDays(TODAY,-6),subj:'宪法',qtype:'论述',point:'公民基本权利（监督权）',type:'框架不全',mastery:0,redo:''}
+    ],
+    hotpoints:hp
+  };
+}
+var state;
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){state=JSON.parse(raw);if(!state.paper)state.paper='法学';if(!state.goals)state.goals=defaultState().goals;if(!state.hotpoints)state.hotpoints=defaultState().hotpoints;}
+    else state=defaultState();
+  }catch(e){state=defaultState();}
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+
+/* ============ 头部/开关 ============ */
+function renderHeader(){
+  var wd=['日','一','二','三','四','五','六'][new Date().getDay()];
+  var t=TODAY.split('-');
+  $('headerDate').textContent=t[0]+'年'+t[1]+'月'+t[2]+'日 周'+wd+(state.paper==='法学'?' · 法学卷':' · 非法学卷（英语一）');
+  var days=dayDiff(TODAY,state.examDate);
+  $('cdNum').textContent=days>=0?days:'已考完';
+  $('cdDate').textContent=state.examDate+'（'+fmtCN(state.examDate)+'）';
+  $('cdStreak').textContent=calcStreak();
+  renderPhase();
+  renderRound();
+  renderPaperSwitch();
+  renderQTypes();
+}
+function renderPaperSwitch(){
+  var btns=$('paperSwitch').children;
+  for(var i=0;i<btns.length;i++)btns[i].className=(btns[i].getAttribute('data-p')===state.paper)?'on':'';
+}
+$('paperSwitch').addEventListener('click',function(e){
+  var b=e.target.closest('button');
+  if(!b)return;
+  var p=b.getAttribute('data-p');
+  if(p===state.paper){toast('已经是'+p+'卷啦');return;}
+  state.paper=p;
+  save();renderAll();
+  toast('已切换到'+p+'卷，题型跟着变了');
+});
+function renderQTypes(){
+  var opts=TYPES[state.paper].map(function(t){return '<option>'+t+'</option>';}).join('');
+  $('qType').innerHTML=opts;
+  $('mTypeQ').innerHTML=opts;
+  $('mType').innerHTML=ERR_TYPES.map(function(t){return '<option>'+t+'</option>';}).join('');
+  $('subjWeightBadge').textContent=state.paper==='法学'?'主观题占73%':'客观题更重';
+}
+function calcStreak(){
+  var s=0,d=new Date();
+  if(state.checkins.indexOf(todayStr(d))<0)d.setDate(d.getDate()-1);
+  while(state.checkins.indexOf(todayStr(d))>=0){s++;d.setDate(d.getDate()-1);}
+  return s;
+}
+function renderPhase(){
+  var m=parseInt(TODAY.split('-')[1],10),txt='',tag='';
+  if(m<=6){tag='基础期';txt='<b>现在</b>：啃透《考试分析》第一轮，理解优先，别急着背。';}
+  else if(m<=9){tag='强化期';txt='<b>现在</b>：二轮背诵 + 真题章节刷题，客观题正确率盯 <b>80%</b>。';}
+  else if(m<=11){tag='冲刺期';txt='<b>现在</b>：三轮背诵抓高频 + 主观题专项，每周 1 次 3 小时模考。';}
+  else{tag='最后阶段';txt='<b>稳住</b>：高频默写 + 错题回顾，调整作息别熬夜。';}
+  $('phaseText').innerHTML='<span class="tag">'+tag+'</span>'+txt;
+}
+function renderRound(){
+  var m=parseInt(TODAY.split('-')[1],10),txt='',badge='';
+  if(m<=6){badge='一轮';txt='第一轮：通读《考试分析》，理解+思维导图';}
+  else if(m<=8){badge='二轮';txt='<b>二轮地毯式</b>：按章节背，每天 2 小时，配合真题章节题';}
+  else if(m<=10){badge='三轮';txt='<b>三轮抓重点</b>：优先近 5 年高频考点，标注考过的题';}
+  else{badge='冲刺';txt='<b>冲刺轮</b>：高频考点默写 + 主观题答题框架训练';}
+  $('roundBanner').innerHTML='<span class="rb-tag">背诵轮次</span><span>'+txt+'</span>';
+  $('roundBadge').textContent=badge;
+}
+
+/* ============ 打卡热力 ============ */
+function renderHeat(){
+  var box=$('heatMap');box.innerHTML='';
+  var today=new Date();
+  var start=new Date(today);start.setDate(start.getDate()-55);
+  start.setDate(start.getDate()-start.getDay());
+  for(var i=0;i<56;i++){
+    var d=new Date(start);d.setDate(start.getDate()+i);
+    var ds=todayStr(d);
+    var div=document.createElement('div');
+    div.className='d'+(state.checkins.indexOf(ds)>=0?' on':'')+(ds===TODAY?' today':'');
+    var wd=d.getDay();
+    if(wd===0||wd===6)div.innerHTML='<span class="day">'+(wd===0?'日':'六')+'</span>';
+    box.appendChild(div);
+  }
+}
+function checkinToday(){
+  if(state.checkins.indexOf(TODAY)>=0){toast('今天已经打过卡啦，别重复哦');return;}
+  state.checkins.push(TODAY);
+  save();renderAll();toast('打卡成功，连续 '+calcStreak()+' 天！');
+}
+function clearCheckins(){
+  openConfirm('清空全部打卡记录？','近 8 周的热力图会变回空白',function(){
+    state.checkins=[];save();renderAll();toast('打卡记录已清空');
+  });
+}
+
+/* ============ 目标分数卡 ============ */
+function renderGoals(){
+  var g=state.goals;
+  var boxes=[
+    {l:'目标总分',n:g.total},
+    {l:'政治',n:g.political},
+    {l:'英语',n:g.english},
+    {l:'专业课',n:g.major}
+  ];
+  var html='';
+  boxes.forEach(function(b){
+    var hit=g.current!=null&&g.current>=g.total;
+    html+='<div class="goal-box'+(hit?' hit':'')+'"><div class="n">'+b.n+'</div><div class="l">'+b.l+'</div></div>';
+  });
+  $('goalGrid').innerHTML=html;
+  if(g.current==null){
+    $('goalGap').innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E86FA0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M7 10 L12 5 L17 10 M4 19 H20"/></svg><span>还没填当前水平，<b>点下方"设置目标分数"</b>填一下，就能看到差距和每周增量</span>';
+    return;
+  }
+  var gap=g.total-g.current;
+  var weeks=Math.max(1,Math.ceil(dayDiff(TODAY,state.examDate)/7));
+  var per=Math.max(0,Math.round(gap/weeks*10)/10);
+  if(gap<=0){
+    $('goalGap').innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F9E63" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg><span><b>已经达到目标线啦</b>（当前 '+g.current+'），稳住别飘，冲更高分！</span>';
+  }else{
+    $('goalGap').innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5 V19 M7 10 L12 5 L17 10"/></svg><span>当前约 <b>'+g.current+' 分</b>，离目标还差 <b>'+gap+' 分</b>，剩 '+weeks+' 周，每周约需提升 <b>'+per+' 分</b></span>';
+  }
+}
+function openEditGoals(){
+  var g=state.goals;
+  $('modalTitle').textContent='设置目标分数';
+  $('modalBody').innerHTML=
+    '<div class="hint">参考复旦 2026 法硕（法学）实录：录取均分 362（政治约65+英语约64+专业课233）。按你的情况改。</div>'+
+    '<div class="frow"><div class="field"><label>目标总分</label><input id="gTotal" type="number" min="300" max="500" value="'+g.total+'"></div>'+
+    '<div class="field"><label>当前水平（模考分）</label><input id="gCurrent" type="number" min="0" max="500" value="'+(g.current||'')+'" placeholder="填了就出差距"></div></div>'+
+    '<div class="frow"><div class="field"><label>政治</label><input id="gPol" type="number" min="0" max="100" value="'+g.political+'"></div>'+
+    '<div class="field"><label>英语</label><input id="gEng" type="number" min="0" max="100" value="'+g.english+'"></div></div>'+
+    '<div class="field"><label>专业课（300分）</label><input id="gMaj" type="number" min="0" max="300" value="'+g.major+'"></div>';
+  $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">取消</button><button class="btn" onclick="saveGoals()">保存</button>';
+  $('modalMask').classList.add('show');
+}
+function saveGoals(){
+  var t=parseInt($('gTotal').value,10),c=$('gCurrent').value,pol=parseInt($('gPol').value,10),eng=parseInt($('gEng').value,10),maj=parseInt($('gMaj').value,10);
+  if(!t||t<300||t>500){toast('总分填 300-500 之间');return;}
+  state.goals={total:t,political:pol||0,english:eng||0,major:maj||0,current:c===''?null:Math.max(0,parseInt(c,10)||0)};
+  save();renderAll();closeModal();toast('目标已保存，加油！');
+}
+
+/* ============ 今天要处理 ============ */
+function renderToday(){
+  var box=$('todayList');box.innerHTML='';
+  var items=[];
+  SUBJECTS.forEach(function(s){
+    var r=state.recite[s];if(!r)return;
+    if(r.done>=r.total)return;
+    if(!r.last){items.push({o:false,html:'<span class="lb"><b>'+s+'</b> 还没开始背（'+r.done+'/'+r.total+'章）<div class="why">进度 0%，从第一章开始吧</div></span>',act:'背完一章！',key:'recite:'+s});return;}
+    var diff=dayDiff(r.last,TODAY);
+    if(diff>1){items.push({o:true,html:'<span class="lb"><b>'+s+'</b> 上次背是 '+fmtDate(r.last)+'，已隔 '+diff+' 天<div class="why">逾期了，赶紧补上（'+r.done+'/'+r.total+'章）</div></span>',act:'补背！',key:'recite:'+s});}
+    else if(diff===1){items.push({o:true,html:'<span class="lb"><b>'+s+'</b> 昨天没背完<div class="why">别让它拖成逾期（'+r.done+'/'+r.total+'章）</div></span>',act:'补背！',key:'recite:'+s});}
+    else{items.push({o:false,html:'<span class="lb"><b>'+s+'</b> 今天还没背<div class="why">背一章就能打卡（'+r.done+'/'+r.total+'章）</div></span>',act:'背完啦！',key:'recite:'+s});}
+  });
+  state.mistakes.forEach(function(m){
+    if(m.mastery>=3)return;
+    var due=true;
+    if(m.redo){if(dayDiff(m.redo,TODAY)<3)due=false;}
+    if(due){
+      var days=m.redo?dayDiff(m.redo,TODAY):dayDiff(m.date,TODAY);
+      items.push({o:m.mastery===1,html:'<span class="lb"><b>'+m.subj+' · '+m.point+'</b><div class="why">掌握度 '+m.mastery+'/3'+(m.redo?'，距上次重做 '+days+' 天':'，还没重做过')+'，该再看一遍</div></span>',act:'重做一遍',key:'mist:'+m.id});
+    }
+  });
+  if(items.length===0){
+    box.innerHTML='<div class="today-empty">今天都安排好了，安心复习 ~ 记得隔几天导出一份备份哦</div>';
+    return;
+  }
+  items.forEach(function(it){
+    var div=document.createElement('div');
+    div.className='today-item'+(it.o?' overdue':'');
+    div.innerHTML=it.html+'<button class="btn mini" '+(it.o?'style="background:var(--red);"':'style="background:var(--pink-deep);"')+' onclick="doToday(\''+it.key+'\')">'+it.act+'</button>';
+    box.appendChild(div);
+  });
+}
+function doToday(key){
+  var p=key.split(':');
+  if(p[0]==='recite'){
+    var s=p[1],r=state.recite[s];
+    if(r.done<r.total)r.done++;
+    r.last=TODAY;
+    save();renderAll();toast(s+' 又进一格，真棒！');
+  }else if(p[0]==='mist'){
+    var m=state.mistakes.find(function(x){return x.id===parseInt(p[1],10);});
+    if(m){m.redo=TODAY;if(m.mastery<2)m.mastery++;save();renderAll();toast('重做完成，掌握度 +1');}
+  }
+}
+
+/* ============ 背诵 ============ */
+function renderRecite(){
+  var box=$('subjectList');box.innerHTML='';
+  SUBJECTS.forEach(function(s){
+    var r=state.recite[s]||{done:0,total:20,last:''};
+    var pct=Math.min(100,Math.round(r.done/r.total*100));
+    var row=document.createElement('div');
+    row.className='subject';
+    row.innerHTML=
+      '<div class="s-name">'+s+'</div>'+
+      '<div class="s-bar"><div class="s-info"><span>'+(r.last?('上次 '+fmtDate(r.last)):'还没背过')+'</span><span>'+r.done+'/'+r.total+' 章 · '+pct+'%</span></div>'+
+      '<div class="bar"><i style="width:'+pct+'%;background:'+SUBJ_COLORS[s]+';"></i></div></div>'+
+      '<div class="s-btn"><button class="btn mini" style="background:'+SUBJ_COLORS[s]+';" onclick="recitePlus(\''+s+'\')">+1 章</button></div>';
+    box.appendChild(row);
+  });
+}
+function recitePlus(s){
+  var r=state.recite[s];if(!r){r=state.recite[s]={done:0,total:20,last:''};}
+  if(r.done<r.total)r.done++;
+  r.last=TODAY;
+  save();renderAll();toast(s+' 背过一章，记上了');
+}
+function renderHot(){
+  var box=$('hotList');box.innerHTML='';
+  SUBJECTS.forEach(function(s){
+    var arr=state.hotpoints[s]||[];
+    var done=arr.filter(function(x){return x.o;}).length;
+    var seg=document.createElement('div');
+    seg.style.marginBottom='12px';
+    seg.innerHTML='<div class="hot-prog">'+SUBJ_SHORT[s]+'：已掌握 <b style="color:'+SUBJ_COLORS[s]+';">'+done+'/'+arr.length+'</b></div>';
+    var grid=document.createElement('div');
+    grid.className='hot-grid';
+    arr.forEach(function(h,i){
+      var c=document.createElement('div');
+      c.className='hot-chip'+(h.o?' done':'');
+      c.innerHTML='<span class="ck">'+(h.o?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 L9 17 L4 12"/></svg>':'')+'</span><span>'+h.n+'</span>';
+      c.onclick=function(){
+        h.o=!h.o;
+        save();renderHot();
+        toast(h.o?'「'+h.n+'」标记为已掌握':'「'+h.n+'」标记为待复习');
+      };
+      grid.appendChild(c);
+    });
+    seg.appendChild(grid);
+    box.appendChild(seg);
+  });
+}
+function renderLogs(){
+  var box=$('logList');box.innerHTML='';
+  var list=state.reciteLog.slice().sort(function(a,b){return a.date<b.date?1:-1;});
+  if(list.length===0){box.innerHTML='<div style="font-size:13px;color:var(--ink-soft);padding:4px;">小本本还空着，今天背了啥记一笔吧</div>';return;}
+  list.slice(0,20).forEach(function(l,i){
+    var div=document.createElement('div');
+    div.className='log-item';
+    div.innerHTML='<span class="date">'+fmtDate(l.date)+'</span><span class="txt"><b>'+l.subj+'</b> · '+l.note+(l.koujue?'<span class="pill-tag">口诀</span>':'')+'</span><span class="del" onclick="delLog('+i+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7 H20 M9 7 V4 H15 V7 M6 7 L7 20 H17 L18 7 M10 11 V16 M14 11 V16"/></svg></span>';
+    box.appendChild(div);
+  });
+}
+function addLog(){
+  var s=$('logSubj').value,n=$('logNote').value.trim(),kj=$('logKoujue').checked;
+  if(!n){toast('写一句背了啥呗');return;}
+  state.reciteLog.push({date:TODAY,subj:s,note:n,koujue:kj});
+  var r=state.recite[s]||{done:0,total:20,last:''};r.last=TODAY;state.recite[s]=r;
+  $('logNote').value='';$('logKoujue').checked=false;
+  save();renderAll();toast(kj?'记上了，口诀也存好了':'记上啦 ~');
+}
+function delLog(i){
+  var list=state.reciteLog.slice().sort(function(a,b){return a.date<b.date?1:-1;});
+  state.reciteLog=state.reciteLog.filter(function(x){return x!==list[i];});
+  save();renderAll();
+}
+function openEditTargets(){
+  var html='<div class="hint">默认按《考试分析》章节数：刑法21/民法21/法理13/宪法5/法制史7。想按考点粒度也行，改数字即可。</div>';
+  SUBJECTS.forEach(function(s){
+    var r=state.recite[s]||{done:0,total:20,last:''};
+    html+='<div class="field"><label>'+s+'（目标总数）</label><input id="tg_'+s+'" type="number" min="1" max="500" value="'+r.total+'"></div>';
+  });
+  $('modalTitle').textContent='调整背诵目标';
+  $('modalBody').innerHTML=html;
+  $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">取消</button><button class="btn" onclick="saveTargets()">保存</button>';
+  $('modalMask').classList.add('show');
+}
+function saveTargets(){
+  SUBJECTS.forEach(function(s){
+    var v=parseInt($('tg_'+s).value,10);
+    if(v>0&&v<=500){var r=state.recite[s]||{done:0,total:20,last:''};r.total=v;state.recite[s]=r;}
+  });
+  save();renderAll();closeModal();toast('目标已更新');
+}
+
+/* ============ 刷题 ============ */
+function addQuiz(){
+  var subj=$('qSubj').value,type=$('qType').value;
+  var c=parseInt($('qCount').value,10),ok=parseInt($('qCorrect').value,10);
+  if(!c||isNaN(ok)){toast('题数和做对数都要填哦');return;}
+  if(ok>c){toast('做对的数量不能比总数多呀');return;}
+  state.quiz.push({date:TODAY,subj:subj,type:type,count:c,correct:ok});
+  $('qCount').value='';$('qCorrect').value='';
+  save();renderAll();toast('记上了，正确率 '+Math.round(ok/c*100)+'%');
+}
+function dailyRate(ds){
+  var rows=state.quiz.filter(function(q){return q.date===ds;});
+  if(!rows.length)return null;
+  var c=0,ok=0;rows.forEach(function(q){c+=q.count;ok+=q.correct;});
+  return Math.round(ok/c*100);
+}
+function renderClock(){
+  var rows=CLOCK[state.paper]||CLOCK['法学'];
+  var html='<table class="clock-table"><tr><th>试卷 / 题型</th><th>建议用时</th></tr>';
+  rows.forEach(function(r){html+='<tr><td>'+r.t+'</td><td>'+r.m+'</td></tr>';});
+  html+='</table>';
+  $('clockBox').innerHTML=html;
+}
+function renderTrend(){
+  var box=$('trendChart');
+  var days=[],vals=[];
+  for(var i=13;i>=0;i--){var ds=addDays(TODAY,-i);days.push(ds);vals.push(dailyRate(ds));}
+  var W=620,H=200,padL=40,padB=28,padT=14,padR=16;
+  var x0=padL,x1=W-padR,y0=padT,y1=H-padB;
+  var px=function(i){return x0+(x1-x0)*i/13;};
+  var py=function(v){var pv=Math.max(50,Math.min(100,v));return y1-(pv-50)/50*(y1-y0);};
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img"><title>近14天正确率</title><desc>折线图，目标线80%</desc>';
+  s+='<line x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'" stroke="#E8D5E0" stroke-width="1.5"/>';
+  [60,80,100].forEach(function(v){
+    s+='<line x1="'+x0+'" y1="'+py(v)+'" x2="'+x1+'" y2="'+py(v)+'" stroke="#F0E0E9" stroke-width="1" stroke-dasharray="3 4"/>';
+    s+='<text x="'+(x0-6)+'" y="'+(py(v)+4)+'" text-anchor="end" font-size="11" fill="#B9A9B2">'+v+'%</text>';
+  });
+  s+='<line x1="'+x0+'" y1="'+py(80)+'" x2="'+x1+'" y2="'+py(80)+'" stroke="#F5A7C8" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  var pts=[],pts2=[];
+  vals.forEach(function(v,i){
+    var x=px(i),y=v===null?y1:py(v);
+    pts.push(x+','+y);
+    if(v!==null)pts2.push(x+','+y);
+  });
+  s+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#E8D5E0" stroke-width="1.5" stroke-dasharray="4 4"/>';
+  if(pts2.length>=2)s+='<polyline points="'+pts2.join(' ')+'" fill="none" stroke="#E31B23" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  vals.forEach(function(v,i){
+    if(v===null)return;
+    var x=px(i);
+    s+='<circle cx="'+x+'" cy="'+py(v)+'" r="4" fill="#fff" stroke="#E31B23" stroke-width="2.5"/>';
+  });
+  for(var j=0;j<=13;j+=2){
+    s+='<text x="'+px(j)+'" y="'+(y1+18)+'" text-anchor="middle" font-size="11" fill="#B9A9B2">'+fmtDate(days[j])+'</text>';
+  }
+  s+='</svg>';
+  box.innerHTML=s;
+}
+function renderSubjChart(){
+  var box=$('subjChart');
+  var W=620,H=210,padL=40,padB=34,padT=14,padR=16;
+  var x0=padL,x1=W-padR,y0=padT,y1=H-padB;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img"><title>各科正确率</title><desc>五科柱状图</desc>';
+  s+='<line x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'" stroke="#E8D5E0" stroke-width="1.5"/>';
+  [0,50,100].forEach(function(v){
+    var yy=y1-(v/100)*(y1-y0);
+    s+='<line x1="'+x0+'" y1="'+yy+'" x2="'+x1+'" y2="'+yy+'" stroke="#F0E0E9" stroke-width="1" stroke-dasharray="3 4"/>';
+    s+='<text x="'+(x0-6)+'" y="'+(yy+4)+'" text-anchor="end" font-size="11" fill="#B9A9B2">'+v+'%</text>';
+  });
+  var bw=Math.min(64,(x1-x0-60)/5),gap=(x1-x0-60-bw*5)/4;
+  SUBJECTS.forEach(function(subj,i){
+    var rows=state.quiz.filter(function(q){return q.subj===subj;});
+    var c=0,ok=0;rows.forEach(function(q){c+=q.count;ok+=q.correct;});
+    var v=c?Math.round(ok/c*100):0;
+    var cx=x0+gap/2+i*(bw+gap)+bw/2;
+    var h=(v/100)*(y1-y0);
+    var cy=y1-h;
+    s+='<rect x="'+(cx-bw/2)+'" y="'+cy+'" width="'+bw+'" height="'+Math.max(h,3)+'" rx="8" fill="'+SUBJ_COLORS[subj]+'" opacity="'+(c?1:0.3)+'"/>';
+    s+='<text x="'+cx+'" y="'+(cy-7)+'" text-anchor="middle" font-size="12" font-weight="600" fill="#3D3D3D">'+(c?(v+'%'):'没刷')+'</text>';
+    s+='<text x="'+cx+'" y="'+(y1+20)+'" text-anchor="middle" font-size="12" fill="#8A8A8A">'+SUBJ_SHORT[subj]+'</text>';
+    s+='<text x="'+cx+'" y="'+(y1+38)+'" text-anchor="middle" font-size="11" fill="#B9A9B2">'+c+'题</text>';
+  });
+  s+='</svg>';
+  box.innerHTML=s;
+}
+
+/* ============ 错题夹 ============ */
+var mStarVal=0;
+function renderStars(){
+  var sts=$('mStars').children;
+  for(var i=0;i<sts.length;i++)sts[i].className='st'+(i<mStarVal?' on':'');
+}
+$('mStars').addEventListener('click',function(e){
+  var st=e.target.closest('.st');
+  if(!st)return;
+  mStarVal=parseInt(st.getAttribute('data-v'),10);
+  renderStars();
+});
+function addMistake(){
+  var subj=$('mSubj').value,qtype=$('mTypeQ').value,type=$('mType').value,point=$('mPoint').value.trim();
+  if(!point){toast('考点总要写一句吧');return;}
+  state.mistakes.push({id:Date.now(),date:TODAY,subj:subj,qtype:qtype,point:point,type:type,mastery:mStarVal,redo:''});
+  $('mPoint').value='';mStarVal=0;renderStars();
+  save();renderAll();toast('收进错题夹了，记得回来看它');
+}
+function renderMist(){
+  $('mistCount').textContent=state.mistakes.length;
+  var box=$('mistList');box.innerHTML='';
+  if(state.mistakes.length===0){box.innerHTML='<div style="font-size:13px;color:var(--ink-soft);padding:4px;">错题夹空空的，说明你最近很稳，继续保持</div>';return;}
+  state.mistakes.slice().sort(function(a,b){return b.date.localeCompare(a.date);}).forEach(function(m){
+    var stars='';
+    for(var i=0;i<3;i++)stars+='<svg width="15" height="15" viewBox="0 0 24 24" fill="'+(i<m.mastery?'#F2C200':'#E8D5E0')+'" style="vertical-align:-2px;"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg>';
+    var div=document.createElement('div');
+    div.className='log-item';
+    div.innerHTML='<span class="date">'+fmtDate(m.date)+'</span><span class="txt"><b>'+m.subj+' · '+m.point+'</b><div style="font-size:12px;color:var(--ink-soft);margin-top:1px;">'+(m.qtype?m.qtype+' · ':'')+m.type+(m.redo?' · 上次重做 '+fmtDate(m.redo):' · 还没重做')+'</div><div style="margin-top:3px;">'+stars+'</div></span><span class="del" onclick="delMist('+m.id+')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7 H20 M9 7 V4 H15 V7 M6 7 L7 20 H17 L18 7 M10 11 V16 M14 11 V16"/></svg></span>';
+    box.appendChild(div);
+  });
+  var colors={'概念混淆':'#E31B23','法条记忆':'#F17EB0','理解偏差':'#F2C200','要点遗漏':'#7AC74F','表述不规范':'#B388EB','框架不全':'#E86FA0','粗心':'#B4B2A9'};
+  var errC={};
+  state.mistakes.forEach(function(m){errC[m.type]=(errC[m.type]||0)+1;});
+  var keys=Object.keys(errC);
+  var total=state.mistakes.length||1;
+  var bar='',leg='';
+  keys.forEach(function(k){
+    var w=Math.round(errC[k]/total*100);
+    bar+='<i style="width:'+w+'%;background:'+(colors[k]||'#B4B2A9')+';"></i>';
+    leg+='<span class="lg"><span class="sw" style="background:'+(colors[k]||'#B4B2A9')+';"></span>'+k+' '+errC[k]+'</span>';
+  });
+  $('errBar').innerHTML=bar;
+  $('errLegend').innerHTML=leg||'<span>还没记过错题</span>';
+}
+function delMist(id){
+  var m=state.mistakes.find(function(x){return x.id===id;});
+  if(!m)return;
+  openConfirm('删掉这道错题？','《'+m.point+'》删了就找不回来了哦',function(){
+    state.mistakes=state.mistakes.filter(function(x){return x.id!==id;});
+    save();renderAll();toast('删掉了');
+  });
+}
+
+/* ============ 总览 ============ */
+function renderStats(){
+  var total=0,done=0;
+  SUBJECTS.forEach(function(s){var r=state.recite[s];if(r){total+=r.total;done+=Math.min(r.done,r.total);}});
+  $('stRecite').textContent=total?Math.round(done/total*100)+'%':'0%';
+  var c=0,ok=0;state.quiz.forEach(function(q){c+=q.count;ok+=q.correct;});
+  $('stQuiz').textContent=c;
+  $('stAcc').textContent=c?Math.round(ok/c*100)+'%':'0%';
+  var pending=state.mistakes.filter(function(m){return m.mastery<3;}).length;
+  $('stMist').textContent=pending;
+}
+
+/* ============ 弹窗 ============ */
+function openConfirm(title,msg,cb){
+  $('modalTitle').textContent=title;
+  $('modalBody').innerHTML='<p>'+msg+'</p>';
+  $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">再想想</button><button class="btn" onclick="closeModal();doConfirm()">确定</button>';
+  $('modalMask').classList.add('show');
+  window._confirmCb=cb;
+}
+function doConfirm(){if(window._confirmCb)window._confirmCb();window._confirmCb=null;}
+function closeModal(){$('modalMask').classList.remove('show');}
+function openEditDate(){
+  $('modalTitle').textContent='改考试日期';
+  $('modalBody').innerHTML='<div class="hint">2027 考研初试官方时间未公布，预计 2026-12-19 前后。等研招网公告后可随时改。</div><div class="field"><label>初试日期</label><input id="edDate" type="date" value="'+state.examDate+'"></div>';
+  $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">取消</button><button class="btn" onclick="saveDate()">保存</button>';
+  $('modalMask').classList.add('show');
+}
+function saveDate(){
+  var v=$('edDate').value;
+  if(!v){toast('选个日期呗');return;}
+  state.examDate=v;
+  save();renderAll();closeModal();toast('考试日期已更新');
+}
+
+/* ============ 备份 ============ */
+function exportData(){
+  var blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='kitty-fashuo-backup-'+TODAY+'.json';
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+  toast('备份已导出，收好哦');
+}
+function importData(ev){
+  var f=ev.target.files[0];
+  if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    try{
+      var data=JSON.parse(rd.result);
+      if(!data.recite||!data.quiz||!data.mistakes){toast('文件格式不对，不是这个小屋的备份');return;}
+      state=data;
+      if(!state.paper)state.paper='法学';
+      if(!state.goals)state.goals=defaultState().goals;
+      if(!state.hotpoints)state.hotpoints=defaultState().hotpoints;
+      if(!state.checkins)state.checkins=[];
+      if(!state.reciteLog)state.reciteLog=[];
+      save();renderAll();toast('导入成功，数据都回来啦');
+    }catch(e){toast('文件读不了，换一个试试');}
+  };
+  rd.readAsText(f);
+  ev.target.value='';
+}
+function restoreDemo(){
+  openConfirm('恢复成示例数据？','现在的内容会被示例数据覆盖，建议先导出一份备份',function(){
+    state=defaultState();
+    save();renderAll();toast('示例数据回来啦，可以到处点点看');
+  });
+}
+function openClear(){
+  openConfirm('清空所有数据？','背诵、刷题、错题、目标全都会删掉，而且不能恢复。建议先导出一份备份',function(){
+    localStorage.removeItem(KEY);
+    state=defaultState();
+    save();renderAll();toast('已恢复成初始状态');
+  });
+}
+
+/* ============ 统计提醒 ============ */
+function remindBackup(){
+  var n=state.reciteLog.length+state.quiz.length+state.mistakes.length;
+  if(n>=30&&!localStorage.getItem('wb_fashuo_kitty_reminded')){
+    setTimeout(function(){
+      openConfirm('数据攒到 '+n+' 条啦','复习记录攒了不少，建议现在导出一份备份，换手机也不怕丢',function(){
+        localStorage.setItem('wb_fashuo_kitty_reminded','1');
+        exportData();
+      });
+    },600);
+  }
+}
+
+/* ============ Tab ============ */
+function switchTab(name){
+  ['home','recite','quiz','mistake'].forEach(function(t){
+    $('pg-'+t).style.display=(t===name)?'block':'none';
+  });
+  var tabs=$('tabs').children;
+  for(var i=0;i<tabs.length;i++)tabs[i].className='tab'+(tabs[i].getAttribute('data-t')===name?' on':'');
+}
+$('tabs').addEventListener('click',function(e){
+  var tb=e.target.closest('.tab');
+  if(tb)switchTab(tb.getAttribute('data-t'));
+});
+
+/* ============ 启动 ============ */
+function renderAll(){
+  renderHeader();
+  renderGoals();
+  renderHeat();
+  renderToday();
+  renderRecite();
+  renderHot();
+  renderLogs();
+  renderClock();
+  renderTrend();
+  renderSubjChart();
+  renderMist();
+  renderStats();
+  remindBackup();
+}
+load();
+renderAll();
+if(!localStorage.getItem('wb_fashuo_kitty_usage')){
+  $('usageBox').open=true;
+  localStorage.setItem('wb_fashuo_kitty_usage','1');
+}
+</script>
+</body>
+</html>
