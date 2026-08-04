@@ -40,6 +40,8 @@ body{
 .nav-item svg{flex:0 0 auto;}
 .nav-item:hover{background:var(--pink-light);}
 .nav-item.on{background:var(--red);border-color:var(--red);color:#fff;}
+.nav-item .nav-dot{flex:0 0 auto;margin-left:auto;min-width:20px;height:20px;border-radius:10px;background:#fff;color:#E31B23;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px;}
+.nav-item.on .nav-dot{background:#fff;color:#E31B23;}
 .sb-foot{margin-top:auto;padding-top:14px;border-top:2px dashed #F6DCE7;}
 .sb-date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-bottom:10px;line-height:1.6;}
 .sb-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -188,15 +190,6 @@ header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5p
 .phase .ph b{color:var(--red-deep);}
 .phase .tag{display:inline-block;background:var(--red);color:#fff;font-size:12px;padding:2px 10px;border-radius:999px;margin-right:6px;font-weight:600;}
 
-/* round banner */
-.round-banner{
-  display:flex;align-items:center;gap:10px;
-  background:linear-gradient(90deg,#FFF6E0,#FFFDF5);
-  border:2px dashed #EFC94C;border-radius:16px;padding:11px 14px;margin-bottom:14px;font-size:13.5px;line-height:1.6;
-}
-.round-banner .rb-tag{flex:0 0 auto;background:var(--yellow);color:#633806;font-size:12px;font-weight:700;padding:3px 12px;border-radius:999px;}
-.round-banner b{color:#854F0B;}
-
 /* subject progress */
 .subject{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:2px dashed #F6DCE7;}
 .subject:last-child{border-bottom:none;}
@@ -214,9 +207,12 @@ header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5p
 .kb-bar{height:16px;border-radius:999px;background:#F6E3EC;overflow:hidden;margin-bottom:14px;}
 .kb-bar i{display:block;height:100%;border-radius:999px;transition:width .4s ease;}
 .kb-subj{margin-bottom:16px;}
-.kb-subj-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:#FFFDFE;cursor:pointer;margin-bottom:8px;}
+.kb-subj-head{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:14px;border:2px solid var(--line);background:#FFFDFE;cursor:pointer;margin-bottom:8px;}
+.kb-subj-head .ks-dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;}
 .kb-subj-head .ks-name{font-size:14.5px;font-weight:700;}
-.kb-subj-head .ks-prog{margin-left:auto;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+.kb-subj-head .ks-bar{flex:1;min-width:50px;max-width:130px;height:7px;background:#F3E4EB;border-radius:4px;overflow:hidden;}
+.kb-subj-head .ks-bar i{display:block;height:100%;border-radius:4px;}
+.kb-subj-head .ks-prog{font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
 .kb-subj-head .ks-arr{flex:0 0 auto;transition:transform .2s;color:var(--ink-soft);}
 .kb-subj.open .kb-subj-head .ks-arr{transform:rotate(90deg);}
 .kb-subj.open .kb-subj-head{border-color:var(--pink);background:var(--pink-light);}
@@ -245,15 +241,38 @@ header .date{font-size:12px;color:var(--pink-deep);font-weight:600;margin-top:5p
   border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:1px;
 }
 
-/* today tasks (不背单词式今日任务) */
-.today-tasks{
-  display:flex;align-items:center;gap:10px;background:#FFFDFE;border:2.5px solid var(--line);
-  border-radius:18px;padding:12px 14px;margin-bottom:14px;
+/* hero 学习主入口卡 */
+.hero-card{
+  display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#FFF5F8,#FFF0F4);
+  border:2.5px solid #F5C6D8;border-radius:22px;padding:18px 18px 14px;margin-bottom:14px;
 }
-.tt-item{flex:0 0 auto;font-size:13px;color:var(--ink-soft);}
-.tt-item b{font-size:19px;color:var(--red-deep);margin-right:3px;font-variant-numeric:tabular-nums;}
-.tt-sep{flex:0 0 auto;width:1.5px;height:26px;background:var(--line);}
-.tt-go{margin-left:auto;}
+.hero-ring{flex:0 0 auto;}
+.hero-main{flex:1;min-width:0;}
+.hero-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;
+  background:linear-gradient(135deg,#E31B23,#D8121A);color:#fff;border:none;border-radius:16px;
+  font-size:17px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:transform .12s;
+  box-shadow:0 4px 0 #B8141B;
+}
+.hero-btn:active{transform:translateY(3px) scale(.99);box-shadow:0 1px 0 #B8141B;}
+.hero-nums{display:flex;align-items:center;gap:14px;margin-top:10px;}
+.hn-item{flex:1;display:flex;flex-direction:column;align-items:center;}
+.hn-item b{font-size:24px;font-weight:700;color:var(--ink);line-height:1.15;font-variant-numeric:tabular-nums;}
+.hn-item.due b{color:var(--red-deep);}
+.hn-item span{font-size:11.5px;color:var(--ink-soft);}
+.hn-sep{flex:0 0 auto;width:1.5px;height:30px;background:var(--line);}
+.hero-round{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;color:var(--ink-soft);line-height:1.5;}
+.hero-round .rl-tag{flex:0 0 auto;background:var(--yellow);color:#633806;font-size:11px;font-weight:700;padding:2px 10px;border-radius:999px;}
+
+/* 记一笔 日志入口 */
+.log-entry{
+  display:flex;align-items:center;gap:9px;background:#FFFDFE;border:2px dashed #F5C6D8;
+  border-radius:16px;padding:13px 14px;margin-top:14px;cursor:pointer;transition:background .15s;
+}
+.log-entry:active{background:var(--pink-light);}
+.log-entry .le-txt{font-size:14px;font-weight:700;color:var(--ink);}
+.log-entry .le-num{margin-left:auto;font-size:12px;color:var(--ink-soft);}
+.log-entry svg:last-child{flex:0 0 auto;}
 
 /* card mode (不背单词式沉浸卡片) */
 .card-mode{
@@ -432,6 +451,7 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
   <nav class="sb-nav" id="sbNav">
     <div class="nav-item on" data-t="home">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 C8 3 16 3 20 5 V19 C16 17 8 17 4 19 Z"/><path d="M4 5 V19 M20 5 V19"/></svg>背诵
+      <span class="nav-dot" id="navDueDot" style="display:none;"></span>
     </div>
     <div class="nav-item" data-t="quiz">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 H20 V21 H8 Z"/><path d="M4 6 H8 M4 12 H8 M4 18 H8"/><path d="M11 7 H17 M11 11 H17 M11 15 H14"/></svg>刷题
@@ -466,6 +486,20 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
 
 <!-- ===== 数据（倒计时/目标/打卡/总览/阶段） ===== -->
 <section id="pg-data" style="display:none">
+  <div class="card">
+    <div class="c-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19 L20 5 M8 5 H20 V17"/></svg>
+      复习总览
+      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stRecite">0%</div><div class="l">背诵完成度</div></div>
+      <div class="stat"><div class="n" id="stQuiz">0</div><div class="l">累计刷题</div></div>
+      <div class="stat"><div class="n" id="stAcc">0%</div><div class="l">平均正确率</div></div>
+      <div class="stat"><div class="n" id="stMist">0</div><div class="l">待复习错题</div></div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="c-head">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3 V7 M16 3 V7 M3 10 H21"/></svg>
@@ -515,20 +549,7 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
     </div>
   </div>
 
-  <div class="card">
-    <div class="c-head">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19 L20 5 M8 5 H20 V17"/></svg>
-      复习总览
-      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="n" id="stRecite">0%</div><div class="l">背诵完成度</div></div>
-      <div class="stat"><div class="n" id="stQuiz">0</div><div class="l">累计刷题</div></div>
-      <div class="stat"><div class="n" id="stAcc">0%</div><div class="l">平均正确率</div></div>
-      <div class="stat"><div class="n" id="stMist">0</div><div class="l">待复习错题</div></div>
-    </div>
-  </div>
-
+  
   <div class="card">
     <div class="c-head">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 L2 8 L12 13 L22 8 Z"/><path d="M6 10.5 V15 C6 17 9 19 12 19 C15 19 18 17 18 15 V10.5"/><path d="M22 8 V14"/></svg>
@@ -547,22 +568,28 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
 
 <!-- ===== 主页：背诵卡片首页 ===== -->
 <section id="pg-home">
-  <div class="today-tasks">
-    <div class="tt-item"><b id="ttDue">0</b>个待复习</div>
-    <div class="tt-sep"></div>
-    <div class="tt-item"><b id="ttNew">0</b>个新考点</div>
-    <button class="btn tt-go" onclick="openCardMode()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 H20 M14 6 L20 12 L14 18"/></svg>
-      开始背诵
-    </button>
+  <div class="hero-card">
+    <div class="hero-ring">
+      <svg viewBox="0 0 120 120" width="86" height="86" role="img"><title>今日任务进度</title><circle cx="60" cy="60" r="50" fill="none" stroke="#F6E3EC" stroke-width="12"/><circle id="heroRing" cx="60" cy="60" r="50" fill="none" stroke="#E31B23" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 314" transform="rotate(-90 60 60)"/><text id="heroPct" x="60" y="67" text-anchor="middle" font-size="19" font-weight="700" fill="#B8141B">0%</text></svg>
+    </div>
+    <div class="hero-main">
+      <button class="btn hero-btn" onclick="openCardMode()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 H20 M14 6 L20 12 L14 18"/></svg>
+        开始背诵
+      </button>
+      <div class="hero-nums">
+        <div class="hn-item due"><b id="ttDue">0</b><span>待复习</span></div>
+        <div class="hn-sep"></div>
+        <div class="hn-item"><b id="ttNew">0</b><span>新考点</span></div>
+      </div>
+      <div class="hero-round" id="roundLine"></div>
+    </div>
   </div>
 
   <div class="today-card">
     <div class="tc-title"><span class="dot"></span>今天要处理</div>
     <div class="today-list" id="todayList"></div>
   </div>
-
-  <div class="round-banner" id="roundBanner"></div>
 
   <div class="card">
     <div class="c-head">
@@ -577,28 +604,11 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
     <div id="knowledgeList"></div>
   </div>
 
-  <div class="card">
-    <div class="c-head">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20 H21 M16.5 3.5 A2.1 2.1 0 0 1 19.5 6.5 L7 19 L3 21 L5 17 Z"/></svg>
-      背诵小本本
-      <span class="deco"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A7C8"><path d="M12 2 L14.9 8.6 L22 9.3 L16.6 14 L18.2 21 L12 17.3 L5.8 21 L7.4 14 L2 9.3 L9.1 8.6 Z"/></svg></span>
-    </div>
-    <div class="frow">
-      <div class="field"><label>科目</label>
-        <select id="logSubj"><option>刑法</option><option>民法</option><option>法理学</option><option>宪法</option><option>法制史</option></select>
-      </div>
-      <div class="field"><label>背的是哪一章/考点</label>
-        <input id="logNote" type="text" placeholder="比如：犯罪构成四要件" maxlength="40">
-      </div>
-    </div>
-    <div class="field">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-        <input type="checkbox" id="logKoujue" style="width:auto;min-height:auto;">
-        记个口诀/答题框架（如"主体主观客观客体"）
-      </label>
-    </div>
-    <button class="btn block" onclick="addLog()">记下来！</button>
-    <div class="log-list" id="logList"></div>
+  <div class="log-entry" onclick="openLogModal()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20 H21 M16.5 3.5 A2.1 2.1 0 0 1 19.5 6.5 L7 19 L3 21 L5 17 Z"/></svg>
+    <span class="le-txt">记一笔背诵日志</span>
+    <span class="le-num" id="logCount">0 条记录</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 L15 12 L9 18"/></svg>
   </div>
 </section>
 
@@ -709,19 +719,19 @@ footer{text-align:center;font-size:12px;color:var(--ink-soft);padding:8px 0 18px
 
 <!-- ===== 数据页尾部：使用说明 + 备份 ===== -->
 <section id="pg-data-foot" style="display:none">
-  <div class="card">
-    <div class="c-head">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 1 1 12 12.5 V14 M12 17 H12.01"/></svg>
-      使用说明
-    </div>
-    <div class="u-body" style="font-size:13px;color:var(--ink);line-height:1.9;">
+  <details class="usage" id="usageBox">
+    <summary style="font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:9px;padding:12px 14px;background:#FFFDFE;border:2px solid var(--line);border-radius:16px;cursor:pointer;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9 A2.5 2.5 0 1 1 12 12.5 V14 M12 17 H12.01"/></svg>
+      第一次用？30 秒看懂这个小屋
+    </summary>
+    <div class="u-body" style="font-size:13px;color:var(--ink);line-height:1.9;padding:10px 14px 4px;">
       <b>背诵（主页）</b>：点「开始背诵」刷考点卡片——记住了/模糊/忘记了三档，连续记住 3 次才掌握，按遗忘曲线安排复习。<br>
       <b>今天要处理</b>：逾期背诵与到期错题自动列出，一键处理。<br>
       <b>刷题 / 错题夹</b>：记录与复盘都在这里。<br>
       <b>数据</b>：倒计时、目标分数、打卡、统计与备份。<br>
       <b>安全</b>：数据都在你浏览器里，每周导出一份，换设备也能带走。
     </div>
-  </div>
+  </details>
   <div class="card">
     <div class="c-head">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31B23" stroke-width="2.4" stroke-linecap="round"><path d="M12 3 V15 M7 10 L12 15 L17 10 M4 19 H20"/></svg>
@@ -2090,8 +2100,10 @@ function renderRound(){
   else if(m<=8){badge='二轮';txt='<b>二轮地毯式</b>：按考点清单逐点背，每天 2 小时，配合真题章节题';}
   else if(m<=10){badge='三轮';txt='<b>三轮抓重点</b>：优先近 5 年高频考点，标注考过的题';}
   else{badge='冲刺';txt='<b>冲刺轮</b>：高频考点默写 + 主观题答题框架训练';}
-  $('roundBanner').innerHTML='<span class="rb-tag">背诵轮次</span><span>'+txt+'</span>';
-  $('roundBadge').textContent=badge;
+  var rl=$('roundLine');
+  if(rl)rl.innerHTML='<span class="rl-tag">'+badge+'</span><span>'+txt+'</span>';
+  var rb=$('roundBadge');
+  if(rb)rb.textContent=badge;
 }
 
 /* ============ 打卡热力 ============ */
@@ -2234,10 +2246,13 @@ function renderKnowledge(){
     arr.forEach(function(gr){gr.pts.forEach(function(p){sTotal++;if(p.o)sDone++;});});
     if(!arr.length)return;
     var seg=document.createElement('div');
-    seg.className='kb-subj'+(sDone===sTotal?' open':'');
+    seg.className='kb-subj';
+    var sPct=sTotal?Math.round(sDone/sTotal*100):0;
     var head='<div class="kb-subj-head" onclick="toggleSubj(this)">'+
-      '<span class="ks-name" style="color:'+SUBJ_COLORS[s]+';">'+s+'</span>'+
-      '<span class="ks-prog">'+sDone+'/'+sTotal+' 考点</span>'+
+      '<span class="ks-dot" style="background:'+SUBJ_COLORS[s]+';"></span>'+
+      '<span class="ks-name">'+s+'</span>'+
+      '<span class="ks-bar"><i style="width:'+sPct+'%;background:'+SUBJ_COLORS[s]+';"></i></span>'+
+      '<span class="ks-prog">'+sDone+'/'+sTotal+'</span>'+
       '<span class="ks-arr"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 L15 12 L9 18"/></svg></span></div>';
     var groups='<div class="kb-groups">';
     arr.forEach(function(gr,gi){
@@ -2299,6 +2314,43 @@ function renderTodayTasks(){
   var r=collectPool();
   $('ttDue').textContent=r.dueCount;
   $('ttNew').textContent=r.newCount;
+  var dot=$('navDueDot');
+  if(dot){
+    var urgent=r.dueCount+calcOverdue();
+    if(urgent>0){dot.style.display='flex';dot.textContent=urgent>99?'99+':urgent;}
+    else dot.style.display='none';
+  }
+  var kb=state.knowledge||{};
+  var total=0,done=0;
+  SUBJECTS.forEach(function(s){var arr=kb[s]||[];arr.forEach(function(gr){gr.pts.forEach(function(p){total++;if(p.o)done++;});});});
+  var pct=total?Math.round(done/total*100):0;
+  var ring=$('heroRing');
+  if(ring)ring.setAttribute('stroke-dasharray',(pct/100*314).toFixed(1)+' 314');
+  var hp=$('heroPct');
+  if(hp)hp.textContent=pct+'%';
+  var lc=$('logCount');
+  if(lc)lc.textContent=(state.reciteLog||[]).length+' 条记录';
+}
+function calcOverdue(){
+  var n=0;
+  SUBJECTS.forEach(function(s){
+    var r=state.recite[s];if(!r||!r.last)return;
+    if(dayDiff(r.last,TODAY)>1)n++;
+  });
+  return n;
+}
+function openLogModal(){
+  $('modalTitle').textContent='记一笔背诵日志';
+  $('modalBody').innerHTML=
+    '<div class="frow">'+
+    '<div class="field"><label>科目</label><select id="logSubj"><option>刑法</option><option>民法</option><option>法理学</option><option>宪法</option><option>法制史</option></select></div>'+
+    '<div class="field"><label>背的是哪一章/考点</label><input id="logNote" type="text" placeholder="比如：犯罪构成四要件" maxlength="40"></div>'+
+    '</div>'+
+    '<div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="logKoujue" style="width:auto;min-height:auto;"> 记个口诀/答题框架（如"主体主观客观客体"）</label></div>'+
+    '<div class="log-list" id="logList" style="max-height:180px;overflow:auto;margin-top:10px;"></div>';
+  $('modalBtns').innerHTML='<button class="btn ghost" onclick="closeModal()">取消</button><button class="btn" onclick="addLog()">记下来！</button>';
+  $('modalMask').classList.add('show');
+  renderLogs();
 }
 
 /* ============ 卡片背诵模式（不背单词式） ============ */
@@ -2388,12 +2440,12 @@ function addLog(){
   state.reciteLog.push({date:TODAY,subj:s,note:n,koujue:kj});
   var r=state.recite[s]||{done:0,total:20,last:''};r.last=TODAY;state.recite[s]=r;
   $('logNote').value='';$('logKoujue').checked=false;
-  save();renderAll();toast(kj?'记上了，口诀也存好了':'记上啦 ~');
+  save();renderAll();renderLogs();toast(kj?'记上了，口诀也存好了':'记上啦 ~');
 }
 function delLog(i){
   var list=state.reciteLog.slice().sort(function(a,b){return a.date<b.date?1:-1;});
   state.reciteLog=state.reciteLog.filter(function(x){return x!==list[i];});
-  save();renderAll();
+  save();renderAll();renderLogs();
 }
 
 /* ============ 刷题 ============ */
